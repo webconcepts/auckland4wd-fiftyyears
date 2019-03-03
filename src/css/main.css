@@ -83,6 +83,16 @@ body {
     @apply mb-4;
  }
 
+.typography a:link,
+.typography a:visited {
+    @apply text-havelock;
+}
+
+.typography a:hover,
+.typography a:focus {
+    @apply text-blackish;
+}
+
 .-translateX-50 {
     transform: translateX(-50%);
 }

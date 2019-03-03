@@ -93,7 +93,7 @@ class CreatePhotoAlbumForm extends React.Component {
             Is this not you? <Link to="/login" className="text-grey hover:text-white">Login with a different email</Link>
           </p>
         }      
-        <FormButton label="create draft photo album" type="submit" iconComponent={Check} color="conifer" />      
+        <FormButton label="create draft photo album" type="submit" iconComponent={Check} iconColor="conifer" hoverColor="conifer" />      
       </form>
     );    
   }

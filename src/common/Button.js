@@ -1,24 +1,35 @@
 import React from 'react';
 
-function Button(props) {
-  const IconComponent = props.iconComponent;
+function Button({ 
+  iconComponent, 
+  type = 'button', 
+  label,
+  onClick,
+  disabled, 
+  className,
+  textColor = 'white', 
+  hoverColor = 'white', 
+  iconColor, 
+  disabledColor = 'grey-dark'
+}) {
+  const IconComponent = iconComponent;
 
-  const textColor = props.textColor ? props.textColor : 'white';
-  const textClass = props.disabled ? props.color : textColor;
-  const extraClasses = props.className ? props.className : '';
+  const textCss = disabled ? `text-${disabledColor}` : `text-${textColor}`;
+  const hoverCss = disabled ? '' : `hover:text-${hoverColor} focus:text-${hoverColor}`;
+  const iconCss = iconColor && !disabled ? `text-${iconColor}` : '';
 
   return (
     <button 
-      type={props.type ? props.type : 'button'} 
-      disabled={props.disabled}
-      onClick={props.onClick} 
-      className={`text-${textClass} flex md:inline-flex items-center focus:outline-none hover:text-${props.color} focus:text-${props.color} ${extraClasses}`} 
+      type={type} 
+      disabled={disabled}
+      onClick={onClick} 
+      className={`flex md:inline-flex items-center focus:outline-none ${textCss} ${hoverCss} ${disabled && 'cursor-default'} ${className}`} 
     >
-      <div className={`py-2 pr-2 leading-none text-${props.color}`}>
+      <div className={`py-2 pr-2 leading-none ${iconCss}`}>
         <IconComponent size="24" />
       </div> 
       <div className="font-semibold">
-        {props.label}
+        {label}
       </div>
     </button>
   );

@@ -49,7 +49,7 @@ class LoginForm extends React.Component {
           </FeedbackMessage>
         )}
         <TextFormField inputRef={this.emailInput} name="email" label="Your email" autocomplete="email" disabled={this.state.loading} />  
-        <FormButton label="Login by email" type="submit" iconComponent={LogIn} color="havelock" disabled={this.state.loading} />  
+        <FormButton label="Login by email" type="submit" iconComponent={LogIn} iconColor="havelock" hoverColor="havelock" disabled={this.state.loading} />  
       </form>       
     );
   }

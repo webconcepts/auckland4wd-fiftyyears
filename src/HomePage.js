@@ -23,7 +23,7 @@ function HomePage(props) {
             everyone to enjoy during our reunion in April. 
           </p>
         </div>
-        <ToggleViewButton label="Create a photo album" iconComponent={Image} color="buttercup" hideByDefault={true} onlyOnce={true}>
+        <ToggleViewButton label="Create a photo album" iconComponent={Image} iconColor="buttercup" hoverColor="buttercup" hideByDefault={true} onlyOnce={true}>
           <CreatePhotoAlbumForm user={props.user} onAuthTokenRetrieved={props.onAuthTokenRetrieved} />
         </ToggleViewButton>
         {props.user && <DraftPhotoAlbumList user={props.user} />}

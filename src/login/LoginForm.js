@@ -1,5 +1,6 @@
 import React from 'react';
-import { apiPost } from '../utils/api.js';
+import { fetchApi, onStatus } from '../utils/api.js';
+
 import FeedbackMessage from '../common/FeedbackMessage';
 import TextFormField from '../forms/TextFormField';
 import FormButton from '../forms/FormButton';
@@ -27,12 +28,10 @@ class LoginForm extends React.Component {
       error: false,
     });
 
-    apiPost('auth/verification', { email: this.emailInput.current.value }, 
-      {
-        201: (json) => this.setState({ loading: false, sent: true }),
-        error: () => this.setState({ loading: false, error: true })
-      }     
-    );
+    fetchApi('POST', 'auth/verification', { email: this.emailInput.current.value })
+      .then((response) => onStatus(response, 201))
+      .then(() => this.setState({ loading: false, sent: true }))
+      .catch(() => this.setState({ loading: false, error: true }));
   }
 
   render() {

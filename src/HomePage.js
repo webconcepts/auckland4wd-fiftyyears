@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
+import UserContext from './context/user-context';
 import PageHeader from './common/PageHeader';
 import ToggleViewButton from './common/ToggleViewButton';
 import CreatePhotoAlbumForm from './photos/CreatePhotoAlbumForm';
@@ -9,7 +11,7 @@ import { Image } from 'react-feather';
 function HomePage(props) {
   return (
     <React.Fragment>
-      <PageHeader user={props.user} />
+      <PageHeader />
       <div className="max-w-md mx-auto">
         <h2 className="font-light text-24 mt-12 mb-10">This year we celebrate 50 years</h2>
         <div className="typography leading-normal font-light mb-8">
@@ -23,10 +25,23 @@ function HomePage(props) {
             everyone to enjoy during our reunion in April. 
           </p>
         </div>
-        <ToggleViewButton label="Create a photo album" iconComponent={Image} iconColor="buttercup" hoverColor="buttercup" hideByDefault={true} onlyOnce={true}>
-          <CreatePhotoAlbumForm user={props.user} onAuthTokenRetrieved={props.onAuthTokenRetrieved} />
-        </ToggleViewButton>
-        {props.user && <DraftPhotoAlbumList user={props.user} />}
+        <UserContext.Consumer>
+          {context => (
+            <React.Fragment>
+              <ToggleViewButton 
+                label="Create a photo album" 
+                iconComponent={Image} 
+                iconColor="buttercup" 
+                hoverColor="buttercup" 
+                hideByDefault={true} 
+                onlyOnce={true}
+              >
+                <CreatePhotoAlbumForm />
+              </ToggleViewButton>       
+              {context.id && <DraftPhotoAlbumList />}            
+            </React.Fragment>
+          )}
+        </UserContext.Consumer>
       </div>
     </React.Fragment>
   );

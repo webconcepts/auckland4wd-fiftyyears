@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { apiPost } from '../utils/api';
+import { fetchApi, handleJsonByStatus } from '../utils/api';
+
 import FeedbackMessage from '../common/FeedbackMessage';
 
 class VerifyPage extends React.Component {
@@ -11,20 +12,14 @@ class VerifyPage extends React.Component {
   }
 
   componentDidMount() {
-    apiPost('auth/token', { verification_code: this.props.match.params.code }, 
-      {
-        201: (json) => this.handleAuthTokenRetrieved(json),
-        410: () => this.setState({ expired: true }),
-        error: () => this.setState({ error: true })
-      }     
-    );
+    fetchApi('POST', 'auth/token', { verification_code: this.props.match.params.code })
+      .then((response) => handleJsonByStatus(response, {
+        201: () => this.setState({ verified: true }),
+        410: () => this.setState({ expired: true })
+      }))
+      .catch(() => this.setState({ error: true }));
   }
-
-  handleAuthTokenRetrieved(data) {
-    this.props.onAuthTokenRetrieved(data);
-    this.setState({ verified: true });
-  }
-
+  
   render() {
     if (this.state.verified) {
       return <Redirect to="/" />

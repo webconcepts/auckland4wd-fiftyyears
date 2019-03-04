@@ -1,59 +1,49 @@
 import React from 'react';
-import { fetchApi, jsonOnStatus, handleJsonByStatus } from '../utils/api';
 
 import UserContext from './user-context';
 
 class UserState extends React.Component {
-  state = {
-    id: null,
-    email: null,
-    access_expires: null,
-    verification_expired: false
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      id: null,
+      email: null,
+      editor: false
+    };
+
+    this.handleTokenChange = this.handleTokenChange.bind(this);
   }
 
   componentDidMount() {
-    // this.fetchUser();
+    window.addEventListener('access_token_updated', this.handleTokenChange);
+    this.handleTokenChange();
   }
 
-  verify(verificationCode) {
-    fetchApi('POST', 'auth/token', { verification_code: verificationCode })
-      .then((response) => handleJsonByStatus(response, {
-        201: (json) => this.handleAuthTokenRetrieved(json),
-        410: () => this.setState({ verification_expired: true })
-      }))
-      .catch(() => this.setState({ apiError: true }));
+  componentWillUnmount() {
+    window.removeEventListener('access_token_updated', this.handleTokenChange);
   }
 
-  fetchUser() {    
-    if (localStorage.getItem('access_token')) {
-      fetchApi('PATCH', 'auth/token')
-        .then((response) => jsonOnStatus(response, 201))
-        .then((json) => this.handleAuthTokenRetrieved(json))
-        .catch(() => this.clearUser());
+  handleTokenChange() {
+    const token = window.localStorage.getItem('fiftyyears:access_token');
+
+    if (token) {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const claims = JSON.parse(window.atob(base64));
+
+      this.setState({
+        id: claims.sub,
+        email: claims.email,
+        editor: claims.editor
+      });
     } else {
-      this.clearUser();
+      this.setState({ 
+        id: null,
+        email: null,
+        editor: false
+      });
     }
-  }
-
-  clearUser() {
-    localStorage.removeItem('access_token');
-    this.setState({ 
-      id: null,
-      email: null,
-      access_expires: null
-    });
-  }
-
-  handleAuthTokenRetrieved(data) {
-    console.log(data);
-
-    localStorage.setItem('access_token', data.access_token);
-
-    this.setState({
-      id: data.user.id,
-      email: data.user.email,
-      access_expires: data.expires_in
-    });
   }
 
   render() {
@@ -62,7 +52,7 @@ class UserState extends React.Component {
         value={{
           id: this.state.id,
           email: this.state.email,
-          access_expires: this.state.access_expires
+          editor: this.state.editor
         }}
       >
         {this.props.children}

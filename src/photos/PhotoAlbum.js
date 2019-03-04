@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
-import { apiGet, apiPatch } from '../utils/api';
+import { fetchApi, onStatus, handleJsonByStatus } from '../utils/api';
 
 import PhotoAlbumTips from './PhotoAlbumTips';
 import ContentPageHeader from '../common/ContentPageHeader';
@@ -32,11 +32,12 @@ class PhotoAlbum extends React.Component {
   }
 
   componentDidMount() {
-    apiGet('drafts/photo-albums/' + this.props.match.params.id, {
-      200: (json) => this.setState({ album: json.data, loading: false }),
-      // 404: redirect to page not found
-      error: () => this.setState({ apiError: true })
-    });
+    fetchApi('GET', 'drafts/photo-albums/' + this.props.match.params.id)
+      .then((response) => handleJsonByStatus(response, {
+        200: (json) => this.setState({ album: json.data, loading: false })
+        // 404: redirect to page not found        
+      }))
+      .catch(() => this.setState({ apiError: true }));    
   }
 
   handleChange(event, field) {
@@ -50,11 +51,9 @@ class PhotoAlbum extends React.Component {
   }
 
   handleSave() {
-    apiPatch('drafts/photo-albums/' + this.props.match.params.id, this.state.album,
-      {
-        error: () => this.setState({ apiError: true })
-      }
-    );
+    fetchApi('PATCH', 'drafts/photo-albums/' + this.props.match.params.id, this.state.album)
+      .then((response) => onStatus(response, 200))
+      .catch(() => this.setState({ apiError: true }));
   }
 
   render() {

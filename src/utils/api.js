@@ -1,61 +1,4 @@
 
-export default function apiFetch(method, url, body, handlers) {
-  let headers = {
-    'Content-Type': 'application/json'
-  };
-
-  const accessToken = localStorage.getItem('access_token');
-  if (accessToken) {
-    headers['Authorization'] = 'Bearer ' + accessToken;
-  }
-
-  let options = { 
-    method: method,    
-    headers: headers
-  };
-
-  if (body) {
-    options.body = JSON.stringify(body);
-  }
-
-  handleFetch('http://localhost/fiftyyears/api/public/' + url, options, handlers);
-}
-
-export function handleFetch(url, options, handlers) {
-  return fetch(url, options)
-    .then(function(response) { 
-      if (handlers[response.status]) {
-        return response.json().then((json) => handlers[response.status](json));
-      }
-      if (handlers.error) {
-        return response.json().then((json) => handlers.error(json));
-      }
-
-      throw new Error();        
-    })      
-    .catch(function(error) {
-      if (handlers.error) {
-        return handlers.error();
-      }
-    });
-}
-
-export function apiPost(url, body, handlers) {
-  return apiFetch('POST', url, body, handlers);
-}
-
-export function apiGet(url, handlers) {
-  return apiFetch('GET', url, false, handlers);
-}
-
-export function apiPatch(url, body, handlers) {
-  return apiFetch('PATCH', url, body, handlers);
-}
-
-export function apiDelete(url, body, handlers) {
-  return apiFetch('DELETE', url, body, handlers);
-}
-
 export function fetchApi(method, url, body = false) {
   let options = { 
     method: method,    
@@ -68,12 +11,24 @@ export function fetchApi(method, url, body = false) {
     options.body = JSON.stringify(body);
   }
 
-  const accessToken = localStorage.getItem('access_token');
+  const accessToken = window.localStorage.getItem('fiftyyears:access_token');
   if (accessToken) {
     options.headers['Authorization'] = 'Bearer ' + accessToken;
   }
 
-  return fetch('http://localhost/fiftyyears/api/public/' + url, options);
+  return fetch('http://localhost/fiftyyears/api/public/' + url, options)
+    .then((response) => {
+      if (response.headers.has('x-access_token')) {
+        // store new access token 
+        window.localStorage.setItem('fiftyyears:access_token', response.headers.get('x-access_token'));
+        window.dispatchEvent(new CustomEvent('access_token_updated'));
+      } else if (response.status == 401) {
+        // clear access token if api returned unauthorized error
+        window.localStorage.removeItem('fiftyyears:access_token');
+        window.dispatchEvent(new CustomEvent('access_token_updated'));
+      }
+      return response;
+    });
 }
 
 export function onStatus(response, status) {

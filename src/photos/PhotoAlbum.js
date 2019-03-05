@@ -8,8 +8,10 @@ import ContentPageFooter from '../common/ContentPageFooter';
 import PhotoGrid from './PhotoGrid';
 import PhotoView from './PhotoView';
 import Editable from '../forms/Editable';
+import DraftMetaListItem from '../common/DraftMetaListItem';
+import DraftMetaListDateItem from '../common/DraftMetaListDateItem';
 import PageSpinner from '../common/PageSpinner';
-import { Camera, MapPin, Calendar, ArrowLeft } from 'react-feather';
+import { Camera, MapPin, Calendar } from 'react-feather';
 
 class PhotoAlbum extends React.Component {
   constructor(props) {
@@ -19,6 +21,9 @@ class PhotoAlbum extends React.Component {
       album: {
         title: null,
         date: null,
+        approx_day: null,
+        approx_month: null,
+        approx_year: null,
         location: null,
         photographer: null,
         description: null
@@ -46,8 +51,7 @@ class PhotoAlbum extends React.Component {
 
     this.setState({
       album: album
-    });
-   
+    });   
   }
 
   handleSave() {
@@ -75,9 +79,37 @@ class PhotoAlbum extends React.Component {
         <main>
           <div className="max-w-lg xl:max-w-xl mx-auto px-6 md:px-10 py-8">
             <ul className="list-reset">
-              <MetaListItem name="date" value="" color="buttercup" label="Date" iconComponent={Calendar} />
-              <MetaListItem name="location" value={this.state.album.location} onChange={(event) => this.handleChange(event, 'location')} onEditingDone={this.handleSave} color="monza" label="Location" iconComponent={MapPin} />
-              <MetaListItem name="photographer" value={this.state.album.photographer} onChange={(event) => this.handleChange(event, 'photographer')} onEditingDone={this.handleSave} color="havelock" label="Photographer" iconComponent={Camera} />
+              <DraftMetaListDateItem 
+                name="date" 
+                day={this.state.album.approx_day} 
+                month={this.state.album.approx_month} 
+                year={this.state.album.approx_year} 
+                onChangeDay={(event) => this.handleChange(event, 'approx_day')} 
+                onChangeMonth={(event) => this.handleChange(event, 'approx_month')} 
+                onChangeYear={(event) => this.handleChange(event, 'approx_year')} 
+                onEditingDone={this.handleSave} 
+                color="buttercup" 
+                label="Date" 
+                iconComponent={Calendar} 
+              />
+              <DraftMetaListItem 
+                name="location" 
+                value={this.state.album.location} 
+                onChange={(event) => this.handleChange(event, 'location')} 
+                onEditingDone={this.handleSave} 
+                color="monza" 
+                label="Location" 
+                iconComponent={MapPin} 
+              />
+              <DraftMetaListItem 
+                name="photographer" 
+                value={this.state.album.photographer} 
+                onChange={(event) => this.handleChange(event, 'photographer')} 
+                onEditingDone={this.handleSave} 
+                color="havelock" 
+                label="Photographer" 
+                iconComponent={Camera} 
+              />
             </ul>
 
             <div className="py-8">
@@ -90,23 +122,9 @@ class PhotoAlbum extends React.Component {
         <PhotoGrid history={this.props.history} albumId={this.props.match.params.id} />
         
         <ContentPageFooter linkBackTo="/" />
-
       </div>
     );
   }
 }
-
-const MetaListItem = (props) => {
-  const IconComponent = props.iconComponent;
-
-  return (
-    <li className="flex md:inline-flex items-center pr-10" aria-label={props.label}>
-      <div className={`py-2 pr-4 leading-none text-${props.color}`}>
-        <IconComponent size="22" />
-      </div>                
-      <Editable name={props.name} value={props.value} onChange={props.onChange} onEditingDone={props.onEditingDone} color={props.color} className="inline-block py-2" />           
-    </li>
-  );
-};
 
 export default PhotoAlbum;

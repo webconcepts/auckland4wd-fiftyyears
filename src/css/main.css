@@ -132,6 +132,10 @@ body {
     transform: translateY(-50%);
 }
 
+.transition-opacity {
+    transition: opacity 2.5s ease-in-out;
+}
+
 .text-shadow {
     text-shadow: 3px 3px 8px config('colors.blackish-light');
 }

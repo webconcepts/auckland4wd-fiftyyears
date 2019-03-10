@@ -93,6 +93,22 @@ body {
     @apply text-blackish;
 }
 
+.animate-rotate {
+    animation-name: animate-rotate;
+    animation-duration: 0.8s;
+    animation-timing-function: linear;
+    transform-origin: 50% 50%;
+    animation-iteration-count: infinite;
+}
+@keyframes animate-rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 .-translateX-50 {
     transform: translateX(-50%);
 }

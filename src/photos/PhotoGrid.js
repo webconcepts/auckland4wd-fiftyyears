@@ -8,17 +8,11 @@ class PhotoGrid extends React.Component {
     super(props);
 
     this.state = {
-      images: [
-        // {id: '1', key: '1', src: '/demo-images/grid1.png'}, {id: '2', key: '2', src: '/demo-images/grid2.png'}, {id: '3', key: '3', src: '/demo-images/grid3.png'}, {id: '4', key: '4', src: '/demo-images/grid4.png'}, {id: '5', key: '5', src: '/demo-images/grid5.png'}, {id: '6', key: '6', src: '/demo-images/grid6.png'}, {id: '7', key: '7', src: '/demo-images/grid1.png'}, {id: '8', key: '8', src: '/demo-images/grid2.png'}, {id: '9', key: '9', src: '/demo-images/grid3.png'}, {id: '10', key: '10', src: '/demo-images/grid4.png'}, {id: '11', key: '11', src: '/demo-images/grid5.png'}, {id: '12', key: '12', src: '/demo-images/grid6.png'}, {id: '13', key: '13', src: '/demo-images/grid1.png'}, {id: '14', key: '14', src: '/demo-images/grid2.png'}, {id: '15', key: '15', src: '/demo-images/grid3.png'}, {id: '16', key: '16', src: '/demo-images/grid4.png'}, {id: '17', key: '17', src: '/demo-images/grid5.png'}, {id: '18', key: '18', src: '/demo-images/grid6.png'}
-      ],
+      images: [],
       draggedItem: null
     };
 
     this.fileInput = React.createRef();
-
-    // this.handleDrag = this.handleDrag.bind(this);
-    // this.handleDragOver = this.handleDragOver.bind(this);
-    // this.handleDrop = this.handleDrop.bind(this);
 
     this.handleUpload = this.handleUpload.bind(this);
   }
@@ -50,7 +44,13 @@ class PhotoGrid extends React.Component {
   handleDrop(event, fileToInsertBefore) {
     event.preventDefault();
 
-    const images = this.reorderArray(this.state.images, this.state.draggedItem, fileToInsertBefore); 
+    // send api request
+    const photoToUpdate = this.state.images[this.state.draggedItem];
+    photoToUpdate.number = this.state.images[fileToInsertBefore].number;
+    this.updatePhoto(this.state.draggedItem, photoToUpdate.id, photoToUpdate);
+
+    // reorder state array
+    const images = this.reorderArray(this.state.images, this.state.draggedItem, fileToInsertBefore);
 
     this.setState({
       draggedItem: null,
@@ -67,8 +67,8 @@ class PhotoGrid extends React.Component {
       for (let i = 0; i < fileInput.files.length; i++) {
 
         // only accept image files
-        if (!fileInput.files[i].type.startsWith('image/')) { 
-          return; 
+        if (!fileInput.files[i].type.startsWith('image/')) {
+          return;
         }
 
         // queue api requests, and get data to add to state
@@ -85,8 +85,7 @@ class PhotoGrid extends React.Component {
     // create new db record for photo
     fetchApi('POST', 'drafts/photo-albums/' + this.props.albumId + '/photos', {
       filename: file.name,
-      type: file.type,
-      number: key
+      type: file.type
     })
       .then(response => jsonOnStatus(response, 201))
       .then(json => {
@@ -149,29 +148,32 @@ class PhotoGrid extends React.Component {
 
     return (
       <div>
-        <ul className="list-reset grid gap-2px template-cols-auto-258px">
-          {images.map((image, i) => 
-            <li 
-              className="block" 
-              key={image.key} 
-              draggable 
-              onDrag={(event) => this.handleDrag(event, i)} 
-              onDrop={(event) => this.handleDrop(event, i)} 
+        <ul className="list-reset grid gap-2px template-3cols-or-more">
+          {images.map((image, i) =>
+            <li
+              className="block"
+              key={image.key}
+              draggable={image.uploaded}
+              onDrag={(event) => this.handleDrag(event, i)}
+              onDrop={(event) => this.handleDrop(event, i)}
               onDragOver={(event) => this.handleDragOver(event)}
             >
-              <PhotoGridItem 
-                imageSrc={image.src} 
-                onLoad={(image) => this.handleImageLoad(image)} 
-                uploading={image.uploaded == false} 
-                history={this.props.history} 
+              <PhotoGridItem
+                id={image.id}
+                albumId={this.props.albumId}
+                imageSrc={image.src}
+                onLoad={(image) => this.handleImageLoad(image)}
+                uploading={image.uploaded == false}
+                history={this.props.history}
+                linkTo={`${this.props.match.url}/photo/${image.id}`}
               />
             </li>
-          )}          
+          )}
           <li className="block bg-blackish-light" key={'uploadbutton'}>
-            <PhotoGridAddItem 
-              ref={this.fileInput} 
-              onChange={this.handleUpload} 
-            />           
+            <PhotoGridAddItem
+              ref={this.fileInput}
+              onChange={this.handleUpload}
+            />
           </li>
         </ul>
       </div>
@@ -180,16 +182,19 @@ class PhotoGrid extends React.Component {
 }
 
 function PhotoGridItem(props) {
+  const src = props.imageSrc ? props.imageSrc
+    : `${process.env.REACT_APP_S3_URL}380x380/${process.env.REACT_APP_S3_KEY_PREFIX}/${props.albumId}/${props.id}`;
+
   return (
     <div className="relative w-full h-0 pb-full">
-      <Link 
-        to={{ pathname: "/photo/1", state: { returnBackTo: props.history.length } }} 
+      <Link
+        to={{ pathname: props.linkTo, state: { returnBackTo: props.history.length } }}
         className="absolute flex w-full h-full overflow-hidden"
       >
-        <img 
-          src={props.imageSrc} 
-          onLoad={props.onLoad} 
-          className={`object-cover w-full hover:shadow-inner ${props.uploading ? 'opacity-40' : ''}`} 
+        <img
+          src={src}
+          onLoad={props.onLoad}
+          className={`object-cover w-full hover:shadow-inner ${props.uploading ? 'opacity-40' : ''}`}
         />
       </Link>
     </div>
@@ -198,19 +203,19 @@ function PhotoGridItem(props) {
 
 const PhotoGridAddItem = React.forwardRef((props, ref) => (
   <div className="relative w-full h-0 pb-full">
-    <label 
+    <label
       title="Upload your photos to add them to this album"
       className="absolute flex items-center justify-center w-full h-full cursor-pointer hover:text-havelock focus:text-havelock"
     >
       <Plus /> add photos
-      <input 
-        ref={ref} 
-        name="Photos[Upload]" 
-        className="hidden" 
-        type="file" 
-        multiple={true} 
-        accept="image/jpeg" 
-        onChange={props.onChange} 
+      <input
+        ref={ref}
+        name="Photos[Upload]"
+        className="hidden"
+        type="file"
+        multiple={true}
+        accept="image/jpeg"
+        onChange={props.onChange}
       />
     </label>
   </div>

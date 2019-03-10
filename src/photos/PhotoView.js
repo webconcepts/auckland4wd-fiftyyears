@@ -1,95 +1,104 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import Editable from '../forms/Editable';
-import { ChevronLeft, ChevronRight, X, Copy } from 'react-feather';
+import { fetchApi, handleJsonByStatus } from '../utils/api';
+
+import FullscreenImage from './FullscreenImage';
+import PhotoCaption from './PhotoCaption';
+import PhotoControls from './PhotoControls';
 
 class PhotoView extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      controlsVisible: true,
-      imageMaxHeight: '100%'
+      id: null,
+      next: null,
+      previous: null,
+      loading: true
     };
 
-    this.imageContainer = React.createRef();
-    this.toggleControlsButton = React.createRef();
-
-    this.toggleControls = this.toggleControls.bind(this);
-    this.resizeImage = this.resizeImage.bind(this);
-    this.scheduleResizeImage = this.scheduleResizeImage.bind(this);
-
-    this.resizeScheduled = false;
+    this.handleControlsToggle = this.handleControlsToggle.bind(this);
+    this.preloadNext = this.preloadNext.bind(this);
   }
 
-  toggleControls(event) {
-    event.preventDefault();
-
-    this.setState({
-      controlsVisible: !this.state.controlsVisible
-    });
-
-    this.toggleControlsButton.current.blur();
-  }
-
-  scheduleResizeImage() {
-    if (this.resizeScheduled == false) {
-      this.resizeScheduled = true;
-      window.requestAnimationFrame(this.resizeImage);
-    }
-  }
-
-  resizeImage() {
-    this.resizeScheduled = false;
-
-    const height = this.imageContainer.current.clientHeight;
-
-    this.setState({
-      imageMaxHeight: height + 'px'
-    });
+  static imageSizes() {
+    return [
+      [670, 670],
+      [960, 960],
+      [1280, 1280],
+      [1520, 855]
+    ];
   }
 
   componentDidMount() {
-    this.resizeImage();
-    window.addEventListener('resize', this.scheduleResizeImage);
+    fetchApi('GET', 'drafts/photo-albums/' + this.props.album + '/photos/' + this.props.id)
+      .then((response) => handleJsonByStatus(response, {
+        200: (json) => {
+          this.setState(json.data);
+          this.setState({
+            next: json.next,
+            previous: json.previous,
+            loading: false
+          });
+        }
+        // 404: redirect to page not found
+      }))
+      .catch(() => this.setState({ error: true, loading: false }));
+
+    const sizes = PhotoView.imageSizes();
+
+    // set resize dimensions of image based on window size
+    for (let i = 0; i < sizes.length; i++) {
+      if ((sizes[i][0] > window.innerWidth && sizes[i][1] > window.innerHeight) || i == sizes.length - 1) {
+        this.setState({
+          resizeWidth: sizes[i][0],
+          resizeHeight: sizes[i][1]
+        });
+        break;
+      }
+    }
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.scheduleResizeImage);
+  handleControlsToggle(visible) {
+    this.setState({ controlsVisible: visible });
+  }
+
+  preloadNext() {
+    if (this.state.next) {
+      (new Image()).src = this.imageSrc(this.state.next);
+    }
+  }
+
+  imageSrc(id) {
+    if (!this.state.resizeWidth) {
+      return '';
+    }
+
+    const resize = `${this.state.resizeWidth}x${this.state.resizeHeight}inside`;
+    const key = `${process.env.REACT_APP_S3_KEY_PREFIX}/${this.props.album}/${id}`;
+
+    return `${process.env.REACT_APP_S3_URL}${resize}/${key}`;
   }
 
   render() {
     return (
-      <div className="font-sans">
-
-        <div className="absolute w-full h-full">
-
-          {/*style={{ left: '2rem', right: '2rem', top: '2rem', bottom: '2rem' }}*/}
-          <div ref={this.imageContainer} className="absolute flex items-center justify-center pin-t pin-l pin-b pin-r">
-            <div className="relative">
-              <img src="/demo-images/full1.png" className="max-w-full float-left" style={{maxHeight: this.state.imageMaxHeight}} />
-              <div hidden={!this.state.controlsVisible} className="absolute z-1 pin-b pin-l w-full p-3 bg-tint-black text-14 lg:text-16 lg:p-4 xl:px-6">                
-                <Editable name="caption" className="font-light inline-block pb-1" buttonColor="white" value="This is a caption underneath the photo" />
-              </div>
-
-            </div>
-          </div>
-          
-          <a href="next" title="Previous photo" className="absolute flex items-center justify-start pin-t pin-l w-1/5 h-full pl-4 text-white hover:text-havelock focus:text-havelock">
-            <ChevronLeft size="44" hidden={!this.state.controlsVisible} />
-          </a>
-          <a href="previous" title="Next photo" className="absolute flex items-center justify-end pin-t pin-r w-1/5 h-full pr-4 text-white hover:text-havelock focus:text-havelock">
-            <ChevronRight size="44" hidden={!this.state.controlsVisible} />
-          </a>
-          <Link to="/album/1" title="Close and return to album" className="absolute pin-t pin-r p-6 text-white hover:text-havelock focus:text-havelock">
-            <X size="28" hidden={!this.state.controlsVisible} />
-          </Link>
-          <button ref={this.toggleControlsButton} title="Toggle controls" onClick={this.toggleControls} className={`${this.state.controlsVisible ? 'text-grey' : 'text-grey-dark'} absolute pin-t pin-l p-6 hover:text-havelock focus:text-havelock`}>
-            <Copy size="16" />
-          </button>
-        </div>
-
-      </div>
+      <section className="fixed w-full h-full z-20 bg-blackish font-sans">
+        <FullscreenImage src={this.state.id ? this.imageSrc(this.state.id) : ''} onLoad={this.preloadNext}>
+          { this.state.id && (
+            <PhotoCaption
+              album={this.props.album}
+              photo={this.props.id}
+              initialValue={this.state.description}
+              hidden={!this.state.controlsVisible}
+            />
+          )}
+        </FullscreenImage>
+        <PhotoControls
+          album={this.props.album}
+          previous={this.state.previous}
+          next={this.state.next}
+          onToggleVisibility={this.handleControlsToggle}
+        />
+      </section>
     );
   }
 }

@@ -61,11 +61,15 @@ class PhotoAlbum extends React.Component {
   }
 
   render() {
+    if (this.state.loading) {
+      return <PageSpinner />;
+    }
+
     return (
       <div className="font-sans">
-        { this.state.loading && 
-          <PageSpinner />
-        }
+        <Route path={`${this.props.match.path}/photo/:photoId`} render={props => (
+          <PhotoView key={props.match.params.photoId} id={props.match.params.photoId} album={props.match.params.id} />
+        )} />
 
         <PhotoAlbumTips />
 
@@ -119,7 +123,7 @@ class PhotoAlbum extends React.Component {
           </div>
         </main>
         
-        <PhotoGrid history={this.props.history} albumId={this.props.match.params.id} />
+        <PhotoGrid history={this.props.history} match={this.props.match} albumId={this.props.match.params.id} />
         
         <ContentPageFooter linkBackTo="/" />
       </div>

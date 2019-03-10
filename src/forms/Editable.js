@@ -1,29 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import ContentEditable from 'react-contenteditable';
 import ButtonForEditable from './ButtonForEditable';
 
-class Editable extends Component {
+class Editable extends React.Component {
   constructor(props) {
-    super(props);   
+    super(props);
 
     this.state = {
-      // value: props.value ? props.value : '',
       editing: false
     };
 
     this.contentEditable = React.createRef();
 
-    // this.handleChange = this.handleChange.bind(this);
     this.toggleEditing = this.toggleEditing.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
-
-  // handleChange(event) {
-  //   this.setState({
-  //     value: event.target.value
-  //   });
-  // }
 
   handleKeyPress(event) {
     if (event.key === 'Enter' && !this.props.multiline) {
@@ -34,9 +26,7 @@ class Editable extends Component {
   toggleEditing() {
     const editing = !this.state.editing;
 
-    this.setState({
-      editing: editing
-    });
+    this.setState({ editing: editing });
 
     if (!editing && this.props.onEditingDone) {
       this.props.onEditingDone();
@@ -52,16 +42,16 @@ class Editable extends Component {
   render() {
     return (
       <div>
-        <ContentEditable 
+        <ContentEditable
           innerRef={this.contentEditable}
           html={this.props.value ? this.props.value : ''}
           disabled={!this.state.editing}
           onChange={this.props.onChange}
           onKeyPress={this.handleKeyPress}
-          tagName={this.props.tagName ? this.props.tagName : 'div'} 
-          className={`focus:outline-none ${this.props.className} ${this.state.editing && 'min-w-1 text-dust bg-tint-white'}`} 
+          tagName={this.props.tagName ? this.props.tagName : 'div'}
+          className={`focus:outline-none ${this.props.className} ${this.state.editing && 'min-w-1 text-dust bg-tint-white'}`}
         />
-        <ButtonForEditable 
+        <ButtonForEditable
           fieldName={this.props.name}
           onClick={this.toggleEditing}
           editing={this.state.editing}
@@ -70,9 +60,9 @@ class Editable extends Component {
           color={this.props.color}
           className={this.props.className}
         />
-      </div>        
+      </div>
     );
-  } 
+  }
 }
 
 export default Editable;

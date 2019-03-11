@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Plus } from 'react-feather';
 import { fetchApi, onStatus, jsonOnStatus } from '../utils/api';
+
+import Spinner from '../common/Spinner';
+import { Plus } from 'react-feather';
 
 class PhotoGrid extends React.Component {
   constructor(props) {
@@ -9,7 +11,8 @@ class PhotoGrid extends React.Component {
 
     this.state = {
       images: [],
-      draggedItem: null
+      draggedItem: null,
+      loading: true,
     };
 
     this.fileInput = React.createRef();
@@ -24,9 +27,9 @@ class PhotoGrid extends React.Component {
         const photos = json.data.map((photo, i) => {
           return {key: i, ...photo};
         });
-        this.setState({ images: photos });
+        this.setState({ images: photos, loading: false });
       })
-      .catch(() => this.setState({ apiError: true }));
+      .catch(() => this.setState({ apiError: true, loading: false }));
   }
 
   handleDrag(event, file) {
@@ -146,6 +149,10 @@ class PhotoGrid extends React.Component {
   render() {
     const images = this.state.images;
 
+    if (this.state.loading) {
+      return <Spinner size="45" delay="1" />;
+    }
+
     return (
       <div>
         <ul className="list-reset grid gap-2px template-3cols-or-more">
@@ -188,14 +195,15 @@ function PhotoGridItem(props) {
   return (
     <div className="relative w-full h-0 pb-full">
       <Link
-        to={{ pathname: props.linkTo, state: { returnBackTo: props.history.length } }}
-        className="absolute flex w-full h-full overflow-hidden"
+        to={props.linkTo}
+        className={`absolute flex w-full h-full overflow-hidden ${props.uploading ? 'pointer-events-none' : ''}`}
       >
         <img
           src={src}
           onLoad={props.onLoad}
           className={`object-cover w-full hover:shadow-inner ${props.uploading ? 'opacity-40' : ''}`}
         />
+        {props.uploading && <Spinner className="absolute pin" size="45" />}
       </Link>
     </div>
   );

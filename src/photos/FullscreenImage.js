@@ -5,12 +5,11 @@ class FullscreenImage extends React.Component {
     super(props);
 
     this.state = {
-      maxHeight: '100%',
+      maxHeight: window.innerHeight + 'px',
       loaded: false
     };
 
     this.resizeScheduled = false;
-    this.container = React.createRef();
 
     this.scheduleResizeImage = this.scheduleResizeImage.bind(this);
     this.resizeImage = this.resizeImage.bind(this);
@@ -18,7 +17,7 @@ class FullscreenImage extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.scheduleResizeImage); 
+    window.addEventListener('resize', this.scheduleResizeImage);
   }
 
   componentWillUnmount() {
@@ -35,28 +34,24 @@ class FullscreenImage extends React.Component {
   resizeImage() {
     this.resizeScheduled = false;
     this.setState({
-      maxHeight: this.container.current.clientHeight + 'px'
+      maxHeight: window.innerHeight + 'px'
     });
   }
 
   handleLoad() {
     this.scheduleResizeImage();
     this.setState({ loaded: true });
-
-    if (this.props.onLoad) {
-      this.props.onLoad();
-    }
   }
 
   render() {
     return (
-      <div ref={this.container} className="absolute flex items-center justify-center pin-t pin-l pin-b pin-r">
+      <div className="absolute flex items-center justify-center pin-t pin-l pin-b pin-r">
         <div className="relative">
-          <img 
+          <img
             src={this.props.src}
             onLoad={this.handleLoad}
-            className="max-w-full float-left" 
-            style={{maxHeight: this.state.maxHeight}}  
+            className="max-w-full"
+            style={{maxHeight: this.state.maxHeight}}
           />
           {this.state.loaded && this.props.children}
         </div>

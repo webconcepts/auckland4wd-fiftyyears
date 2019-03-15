@@ -3,7 +3,7 @@ import React from 'react';
 import { Check, Edit2 } from 'react-feather';
 
 function ButtonForEditable({
-  fieldName,
+  label,
   onClick,
   editing = false,
   hasValue = false,
@@ -28,7 +28,7 @@ function ButtonForEditable({
   } else {
     return (
       <button onClick={onClick} className={`${className} text-grey ${css}`}>
-        add {fieldName}
+        add {label ? label.toLowerCase() : ''}
       </button>);
   }
 }

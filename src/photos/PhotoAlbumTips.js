@@ -4,20 +4,18 @@ import TipsSection from '../common/TipsSection';
 import TipsHeader from '../common/TipsHeader';
 import TipsInlineHeader from '../common/TipsInlineHeader';
 
-function PhotoAlbumTips() {  
-  const linkClasses = 'text-havelock hover:text-blackish focus:text-blackish';
-
+function PhotoAlbumTips() {
   return (
-    <TipsSection key="photo-album-tips" title="Tips for creating a photo album">
+    <TipsSection cacheKey="photo-album-tips" title="Tips for creating a photo album">
       <TipsHeader>Upload good quality images</TipsHeader>
       <p>
-        Smaller images will be generated from the photos you upload, in sizes suitable to display on 
-        this website. The better the quality of the original photo, the better results, although 
+        Smaller images will be generated from the photos you upload, in sizes suitable to display on
+        this website. The better the quality of the original photo, the better results, although
         bigger files will take longer to upload.
-      </p>      
+      </p>
       <TipsHeader>Add a date, even if it's just your best guess</TipsHeader>
       <p>
-        A date is needed to place your album on a timeline. If all you can figure out is the 
+        A date is needed to place your album on a timeline. If all you can figure out is the
         year, you can leave the day and month blank.
       </p>
       <p>

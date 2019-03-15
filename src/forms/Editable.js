@@ -17,12 +17,6 @@ class Editable extends React.Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
-  handleKeyPress(event) {
-    if (event.key === 'Enter' && !this.props.multiline) {
-      this.toggleEditing();
-    }
-  }
-
   toggleEditing() {
     const editing = !this.state.editing;
 
@@ -30,6 +24,12 @@ class Editable extends React.Component {
 
     if (!editing && this.props.onEditingDone) {
       this.props.onEditingDone();
+    }
+  }
+
+  handleKeyPress(event) {
+    if (event.key === 'Enter' && !this.props.multiline) {
+      this.toggleEditing();
     }
   }
 
@@ -52,11 +52,11 @@ class Editable extends React.Component {
           className={`focus:outline-none ${this.props.className} ${this.state.editing && 'min-w-1 text-dust bg-tint-white'}`}
         />
         <ButtonForEditable
-          fieldName={this.props.name}
+          label={this.props.name}
           onClick={this.toggleEditing}
           editing={this.state.editing}
           hasValue={(this.props.value)}
-          multiline ={this.props.multiline}
+          multiline={this.props.multiline}
           color={this.props.color}
           className={this.props.className}
         />

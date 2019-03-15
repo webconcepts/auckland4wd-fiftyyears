@@ -12,7 +12,7 @@ class EditableDate extends React.Component {
     };
 
     this.days = Array.from({length: 31}, (x,i) => i + 1);
-    this.years = Array.from({length: 51}, (x,i) => i + 1969);    
+    this.years = Array.from({length: 51}, (x,i) => i + 1969);
     this.shortMonthNames = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     this.monthNames = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -53,27 +53,27 @@ class EditableDate extends React.Component {
       <div>
         {this.state.editing && (
           <React.Fragment>
-            <Select 
+            <Select
               ref={this.dayInput}
-              value={this.props.day} 
-              options={this.days} 
-              onChange={this.props.onChangeDay} 
-              onKeyPress={this.handleKeyPress} 
+              value={this.props.day}
+              options={this.days}
+              onChange={this.props.onChangeDay}
+              onKeyPress={this.handleKeyPress}
             />
             <span className="text-dust mx-1">/</span>
-            <Select 
-              value={this.props.month} 
-              options={this.shortMonthNames} 
+            <Select
+              value={this.props.month}
+              options={this.shortMonthNames}
               useOptionIndexAsValue={true}
-              onChange={this.props.onChangeMonth} 
-              onKeyPress={this.handleKeyPress} 
+              onChange={this.props.onChangeMonth}
+              onKeyPress={this.handleKeyPress}
             />
             <span className="text-dust mx-1">/</span>
-            <Select 
-              value={this.props.year} 
-              options={this.years} 
-              onChange={this.props.onChangeYear} 
-              onKeyPress={this.handleKeyPress} 
+            <Select
+              value={this.props.year}
+              options={this.years}
+              onChange={this.props.onChangeYear}
+              onKeyPress={this.handleKeyPress}
             />
           </React.Fragment>
         )}
@@ -84,17 +84,17 @@ class EditableDate extends React.Component {
             {this.props.year && <span>{this.props.year}</span>}
           </div>
         )}
-        <ButtonForEditable 
-          fieldName={this.props.name}
+        <ButtonForEditable
+          label={this.props.name}
           onClick={this.toggleEditing}
           editing={this.state.editing}
           hasValue={this.hasValue()}
           color={this.props.color}
           className={this.props.className}
         />
-      </div>        
+      </div>
     );
-  } 
+  }
 }
 
 export default EditableDate;

@@ -9,6 +9,7 @@ import VerifyPage from './login/VerifyPage';
 import PageNotFound from './PageNotFound';
 import PhotoAlbum from './photos/PhotoAlbum';
 import PhotoView from './photos/PhotoView';
+import VideoPage from './videos/VideoPage';
 
 class App extends React.Component {
   render() {
@@ -19,6 +20,7 @@ class App extends React.Component {
             <Route path="/" exact component={HomePage} />
             <Route path="/album/:id" component={PhotoAlbum} />
             <Route path="/photo/:id" component={PhotoView} />
+            <Route path="/video/:id" component={VideoPage} />
             <Route path="/login" component={LoginPage} />
             <Route path="/verify/:code" component={VerifyPage} />
             <Route component={PageNotFound} />

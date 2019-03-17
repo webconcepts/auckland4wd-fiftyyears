@@ -16,6 +16,7 @@ class CreateItemForm extends React.Component {
       email: '',
       id: null,
       emailAlreadyExists: false,
+      isLoading: false,
       isError: false
     };
 
@@ -28,16 +29,16 @@ class CreateItemForm extends React.Component {
     fetchApi('POST', 'auth/user', { email: this.state.email })
       .then((response) => handleJsonByStatus(response, {
         201: () => this.createNewItem(),
-        409: () => this.setState({ emailAlreadyExists: true })
+        409: () => this.setState({ emailAlreadyExists: true, isLoading: false })
       }))
-      .catch(() => this.setState({ isError: true }));
+      .catch(() => this.setState({ isError: true, isLoading: false }));
   }
 
   createNewItem() {
     fetchApi('POST', 'drafts/' + this.props.apiPath, { title: this.titleInput.current.value })
       .then((response) => jsonOnStatus(response, 201))
-      .then((json) => this.setState({ id: json.data.id }))
-      .catch(() => this.setState({ isError: true }));
+      .then((json) => this.setState({ id: json.data.id, isLoading: false }))
+      .catch(() => this.setState({ isError: true, isLoading: false }));
   }
 
   handleSubmit(event) {
@@ -45,6 +46,7 @@ class CreateItemForm extends React.Component {
 
     this.setState({
       emailAlreadyExists: false,
+      isLoading: true,
       isError: false
     });
 
@@ -80,14 +82,20 @@ class CreateItemForm extends React.Component {
             creating a {this.props.label.toLowerCase()}.
           </FeedbackMessage>
         }
-        <TextFormField inputRef={this.titleInput} name="title" label={`${this.props.label} title`} autoComplete="off" />
+        <TextFormField
+          inputRef={this.titleInput}
+          name="title"
+          label={`${this.props.label} title`}
+          autoComplete="off"
+          disabled={this.state.isLoading}
+        />
         <TextFormField
           name="email"
           label="Your email"
           autoComplete="email"
           value={this.context.id ? this.context.email : this.state.email}
           onChange={this.handleEmailChange}
-          disabled={this.context.id}
+          disabled={this.context.id || this.state.isLoading}
         />
         { this.context.id &&
           <p className="sm:ml-1/4 -mt-2 mb-4 text-grey text-14">
@@ -100,6 +108,7 @@ class CreateItemForm extends React.Component {
           iconComponent={Check}
           iconColor="conifer"
           hoverColor="conifer"
+          loading={this.state.isLoading}
         />
       </form>
     );

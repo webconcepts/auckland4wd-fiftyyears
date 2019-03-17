@@ -11,27 +11,27 @@ class LoginForm extends React.Component {
     super(props);
 
     this.state = {
-      loading: false,
+      isLoading: false,
       sent: false,
       error: false
     };
 
     this.emailInput = React.createRef();
-  } 
+  }
 
   handleSubmit(event) {
     event.preventDefault();
 
-    this.setState({ 
-      loading: true,
-      sent: false, 
+    this.setState({
+      isLoading: true,
+      sent: false,
       error: false,
     });
 
     fetchApi('POST', 'auth/verification', { email: this.emailInput.current.value })
       .then((response) => onStatus(response, 201))
-      .then(() => this.setState({ loading: false, sent: true }))
-      .catch(() => this.setState({ loading: false, error: true }));
+      .then(() => this.setState({ isLoading: false, sent: true, error: false }))
+      .catch(() => this.setState({ isLoading: false, error: true }));
   }
 
   render() {
@@ -47,9 +47,22 @@ class LoginForm extends React.Component {
             An email has been sent. Use the link in that email to complete your login.
           </FeedbackMessage>
         )}
-        <TextFormField inputRef={this.emailInput} name="email" label="Your email" autocomplete="email" disabled={this.state.loading} />  
-        <FormButton label="Login by email" type="submit" iconComponent={LogIn} iconColor="havelock" hoverColor="havelock" disabled={this.state.loading} />  
-      </form>       
+        <TextFormField
+          inputRef={this.emailInput}
+          name="email"
+          label="Your email"
+          autocomplete="email"
+          disabled={this.state.isLoading}
+        />
+        <FormButton
+          label="Login by email"
+          type="submit"
+          iconComponent={LogIn}
+          iconColor="havelock"
+          hoverColor="havelock"
+          loading={this.state.isLoading}
+        />
+      </form>
     );
   }
 }

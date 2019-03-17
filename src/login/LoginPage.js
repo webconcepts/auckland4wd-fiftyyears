@@ -1,14 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import PageHeader from '../common/PageHeader';
+import ContentPageFooter from '../common/ContentPageFooter';
 import LoginForm from './LoginForm';
 
 function LoginPage() {
   return (
     <React.Fragment>
       <PageHeader />
-      <div className="max-w-md mx-auto">
-        <h2 className="font-light text-24 my-10">Login</h2>
+      <div className="max-w-md mx-auto px-6 pb-8">
+        <h2 className="font-light text-32 my-10">Login</h2>
         <div className="typography leading-normal font-light mb-12">
           <p>
             We use your email address to identify you. No username, no password, just your email address.
@@ -18,8 +20,8 @@ function LoginPage() {
           </p>
         </div>
         <LoginForm />
-        <Link to="/">Back</Link>
       </div>
+      <ContentPageFooter linkBackTo="/" />
     </React.Fragment>
   );
 }

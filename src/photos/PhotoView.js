@@ -46,7 +46,7 @@ class PhotoView extends React.Component {
     const { photo, next, previous } = this.context.get(this.props.id);
 
     return (
-      <section className="fixed w-full h-full z-20 bg-blackish font-sans">
+      <section className="fixed w-full h-full z-20 bg-blackish">
         { photo && (
           <React.Fragment>
             <FullscreenImage src={this.context.getSrc(photo.key, this.state.imgWidth, this.state.imgHeight, 'inside')}>

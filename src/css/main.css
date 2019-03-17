@@ -67,6 +67,10 @@ body {
  * @import "utilities/skew-transforms";
  */
 
+ body {
+    @apply font-sans;
+ }
+
 .grid {
 	display: grid;
 }

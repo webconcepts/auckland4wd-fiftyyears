@@ -1,4 +1,5 @@
 import React from 'react';
+import { monthName, monthNamesShort } from '../utils/date';
 
 import Select from './Select';
 import ButtonForEditable from './ButtonForEditable';
@@ -13,8 +14,6 @@ class EditableDate extends React.Component {
 
     this.days = Array.from({length: 31}, (x,i) => i + 1);
     this.years = Array.from({length: 51}, (x,i) => i + 1969);
-    this.shortMonthNames = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    this.monthNames = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
     this.dayInput = React.createRef();
 
@@ -24,7 +23,6 @@ class EditableDate extends React.Component {
 
   toggleEditing() {
     const editing = !this.state.editing;
-
     this.setState({ editing: editing });
 
     if (!editing && this.props.onEditingDone) {
@@ -63,7 +61,7 @@ class EditableDate extends React.Component {
             <span className="text-dust mx-1">/</span>
             <Select
               value={this.props.month}
-              options={this.shortMonthNames}
+              options={monthNamesShort}
               useOptionIndexAsValue={true}
               onChange={this.props.onChangeMonth}
               onKeyPress={this.handleKeyPress}
@@ -80,7 +78,7 @@ class EditableDate extends React.Component {
         {!this.state.editing && this.hasValue() && (
           <div className={this.props.className}>
             {this.props.day && <span>{this.props.day} </span>}
-            {this.props.month && <span>{this.monthNames[this.props.month]} </span>}
+            {this.props.month && <span>{monthName(this.props.month)} </span>}
             {this.props.year && <span>{this.props.year}</span>}
           </div>
         )}

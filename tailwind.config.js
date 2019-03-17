@@ -57,6 +57,7 @@ let colors = {
 
   'grey-dark': '#5d5d5d',
   'grey': '#7D7D7D',
+  'grey-light': '#999999',
 
   'buttercup': '#F5A623', // orange
   'buttercup-dark': '#db8b0a',
@@ -340,6 +341,7 @@ module.exports = {
     '0': 0,
     'none': 1,
     'tight': 1.35,
+    'tightish': 1.45,
     'normal': 1.65,
     'loose': 1.9,
   },

@@ -90,7 +90,7 @@ class CreateItemForm extends React.Component {
           disabled={this.context.id}
         />
         { this.context.id &&
-          <p className="ml-1/4 -mt-2 mb-4 text-grey text-14">
+          <p className="sm:ml-1/4 -mt-2 mb-4 text-grey text-14">
             Is this not you? <Link to="/login" className="text-grey hover:text-white">Login with a different email</Link>
           </p>
         }

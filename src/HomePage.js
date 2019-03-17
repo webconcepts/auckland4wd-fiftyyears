@@ -5,16 +5,16 @@ import UserContext from './context/user-context';
 import PageHeader from './common/PageHeader';
 import ToggleViewButton from './common/ToggleViewButton';
 import CreateItemForm from './CreateItemForm';
-import DraftsList from './DraftsList';
+import DraftsList from './common/DraftsList';
 import { Image, Video } from 'react-feather';
 
 function HomePage(props) {
   return (
     <React.Fragment>
       <PageHeader />
-      <div className="max-w-md mx-auto pb-24">
+      <div className="max-w-md mx-auto px-6 pb-24">
         <div className="typography leading-normal font-light mt-10 mb-8">
-          <p className="text-24 pb-4">
+          <p className="text-24 pb-4 leading-tightish">
             This year we celebrate 50 years, of trips, events, competitions and many
             great times shared together.
           </p>
@@ -35,7 +35,9 @@ function HomePage(props) {
                 hideByDefault={true}
                 onlyOnce={true}
               >
-                <CreateItemForm apiPath="photo-albums" urlPath="album" label="Photo album" />
+                <div className="mb-10">
+                  <CreateItemForm apiPath="photo-albums" urlPath="album" label="Photo album" />
+                </div>
               </ToggleViewButton>
               <ToggleViewButton
                 label="Create a video"
@@ -50,6 +52,11 @@ function HomePage(props) {
               {context.id && (
                 <div className="mt-16">
                   <DraftsList />
+                </div>
+              )}
+              {context.id && context.editor && (
+                <div className="mt-16">
+                  <DraftsList user="all" />
                 </div>
               )}
             </React.Fragment>

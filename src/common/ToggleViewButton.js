@@ -25,7 +25,12 @@ class ToggleViewButton extends React.Component {
   render() {
     return (
       <div>
-        <Button onClick={() => this.handleToggle()} disabled={this.state.disabled} {...this.props} />
+        <Button
+          onClick={() => this.handleToggle()}
+          disabled={this.state.disabled}
+          disabledColor={this.props.iconColor}
+          {...this.props}
+        />
         <div hidden={this.state.hidden}>
           {this.props.children}
         </div>

@@ -64,7 +64,7 @@ class DraftContentPage extends React.Component {
                 onChange={(e) => this.context.change('description', e.target.value)}
                 onEditingDone={this.context.save}
                 multiline
-                className="typography leading-normal font-light"
+                className="typography leading-normal font-light text-15 md:text-16"
               />
             </div>
           </div>

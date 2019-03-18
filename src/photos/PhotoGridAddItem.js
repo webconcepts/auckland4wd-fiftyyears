@@ -7,7 +7,7 @@ function PhotoGridAddItem({ onChange }, ref) {
     <div className="relative w-full h-0 pb-full">
       <label
         title="Upload your photos to add them to this album"
-        className="absolute flex items-center justify-center w-full h-full cursor-pointer hover:text-havelock focus:text-havelock"
+        className="absolute flex items-center justify-center w-full h-full cursor-pointer text-14 sm:text-16 hover:text-havelock focus:text-havelock"
       >
         <Plus /> add photos
         <input

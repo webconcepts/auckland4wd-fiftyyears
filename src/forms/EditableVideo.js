@@ -39,18 +39,20 @@ class EditableVideo extends React.Component {
     return (
       <React.Fragment>
         {!this.props.videoId && !this.state.isEditing && (
-          <button
-            type="button"
-            onClick={() => this.setState({ editing: true })}
-            className="flex justify-center items-center bg-blackish-light text-white block w-full py-20"
-          >
-            <Plus /> <span className="pl-2">add video</span>
-          </button>
+          <div className="md:mx-10">
+            <button
+              type="button"
+              onClick={() => this.setState({ isEditing: true })}
+              className="flex justify-center items-center bg-blackish-light text-white block w-full py-20"
+            >
+              <Plus /> <span className="pl-2">add video</span>
+            </button>
+          </div>
         )}
         {this.state.isEditing && (
-          <form onSubmit={(e) => this.handleSave(e)}>
+          <form onSubmit={(e) => this.handleSave(e)} className="mx-6 md:mx-10">
             <TextFormField name="video_url" label="Video URL" value={this.props.value} onChange={this.props.onChange} />
-            <p className="ml-1/4 -mt-2 mb-4 text-grey text-14">
+            <p className="sm:ml-1/4 -mt-2 mb-4 text-grey text-14">
               Insert a URL for a YouTube or Vimeo video
             </p>
             <FormButton label="add video" type="submit" iconComponent={Check} iconColor="conifer" hoverColor="conifer" />
@@ -58,12 +60,14 @@ class EditableVideo extends React.Component {
         )}
         {!this.state.isEditing && this.props.videoId && (
           <React.Fragment>
-            <VideoEmbed id={this.props.videoId} type={this.props.videoType} className="mb-3" />
-            <ButtonForEditable
-              onClick={() => this.setState({ isEditing: true })}
-              hasValue={true}
-              multiline={true}
-            />
+            <VideoEmbed id={this.props.videoId} type={this.props.videoType} className="md:mx-10" />
+            <div className="mt-3 mx-6 md:mx-10">
+              <ButtonForEditable
+                onClick={() => this.setState({ isEditing: true })}
+                hasValue={true}
+                multiline={true}
+              />
+            </div>
           </React.Fragment>
         )}
       </React.Fragment>

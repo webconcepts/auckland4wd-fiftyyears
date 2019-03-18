@@ -17,7 +17,7 @@ function VideoPage(props) {
       >
         <ItemContext.Consumer>
           {(context) => (
-            <div className="max-w-lg xl:max-w-xl xxl:max-w-2xl mx-auto px-6 md:px-10 pb-8">
+            <div className="max-w-lg xl:max-w-xl xxl:max-w-2xl mx-auto pb-8">
               <EditableVideo
                 value={context.data.video_url}
                 videoId={context.data.video_id}

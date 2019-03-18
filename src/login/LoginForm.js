@@ -12,8 +12,8 @@ class LoginForm extends React.Component {
 
     this.state = {
       isLoading: false,
-      sent: false,
-      error: false
+      isSent: false,
+      isError: false
     };
 
     this.emailInput = React.createRef();
@@ -24,25 +24,25 @@ class LoginForm extends React.Component {
 
     this.setState({
       isLoading: true,
-      sent: false,
-      error: false,
+      isSent: false,
+      isError: false,
     });
 
     fetchApi('POST', 'auth/verification', { email: this.emailInput.current.value })
       .then((response) => onStatus(response, 201))
-      .then(() => this.setState({ isLoading: false, sent: true, error: false }))
-      .catch(() => this.setState({ isLoading: false, error: true }));
+      .then(() => this.setState({ isLoading: false, isSent: true, isError: false }))
+      .catch(() => this.setState({ isLoading: false, isError: true }));
   }
 
   render() {
     return (
       <form onSubmit={(event) => this.handleSubmit(event)}>
-        { this.state.error && (
+        { this.state.isError && (
           <FeedbackMessage type="error" className="mb-8">
             Uh oh! Something went wrong. Please check your email address is correct, and try again.
           </FeedbackMessage>
         )}
-        { this.state.sent && (
+        { this.state.isSent && (
           <FeedbackMessage className="mb-8">
             An email has been sent. Use the link in that email to complete your login.
           </FeedbackMessage>

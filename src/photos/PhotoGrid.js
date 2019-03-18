@@ -53,7 +53,7 @@ class PhotoGrid extends React.Component {
             onDrop={(event) => this.handleDrop(event, i)}
           >
             <PhotoGridItem
-              src={this.context.getSrc(photo.key, 380, 380)}
+              src={this.context.getSrc(photo.key, 300, 300)}
               uploading={photo.uploaded == false}
               linkTo={`${this.props.match.url}/photo/${photo.id}`}
             />

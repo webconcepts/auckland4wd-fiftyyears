@@ -3,19 +3,19 @@ import React from 'react';
 import Editable from '../forms/Editable';
 
 function ContentPageHeader(props) {
-  // const Component = props.img ? ContentPageHeaderImage : ContentPageHeaderBasic; 
-  const Component = ContentPageHeaderBasic; 
+  // const Component = props.img ? ContentPageHeaderImage : ContentPageHeaderBasic;
+  const Component = ContentPageHeaderBasic;
 
   return (
     <Component {...props}>
       { /* <h1 className="text-41 font-normal">{props.title}</h1> */ }
-      <Editable 
-        name="title" 
-        tagName="h1" 
-        className="inline-block text-34 text-shadow sm:text-41 font-normal" 
-        value={props.value} 
-        onChange={props.onChange} 
-        onEditingDone={props.onSave} 
+      <Editable
+        name="title"
+        tagName="h1"
+        className="inline-block font-normal text-shadow text-29 md:text-34 lg:text-41"
+        value={props.value}
+        onChange={props.onChange}
+        onEditingDone={props.onSave}
       />
     </Component>
   );
@@ -40,7 +40,7 @@ function ContentPageHeaderImage(props) {
 function ContentPageHeaderBasic(props) {
   return (
     <header className="bg-blackish-light ">
-      <div className="max-w-lg xl:max-w-xl mx-auto px-6 md:px-10 pt-16 pb-8">
+      <div className="max-w-lg xl:max-w-xl mx-auto px-6 md:px-10 pt-16 pb-6 md:pb-8">
         {props.children}
       </div>
     </header>

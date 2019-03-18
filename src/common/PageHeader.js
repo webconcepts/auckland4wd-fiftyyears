@@ -36,7 +36,7 @@ class PageHeader extends React.Component {
             <img src={logo3} width="192" className="ml-1/2 -translateX-50" alt="Auckland 4WD Club" />
           </div>
         </div>
-        <h1 className="text-1 pt-2 px-10"><img src={fiftyYears} width="277" alt="FIFTY YEARS" /></h1>
+        <h1 className="text-1 pt-2 px-12"><img src={fiftyYears} width="277" alt="FIFTY YEARS" /></h1>
         <UserContext.Consumer>
           {context => (
             <React.Fragment>

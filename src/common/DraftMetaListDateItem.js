@@ -18,7 +18,7 @@ function DraftMetaListDateItem({
 
   return (
     <li className="flex md:inline-flex items-center pr-10" aria-label={label}>
-      <div className={`py-2 pr-4 leading-none text-${color}`}>
+      <div className={`py-1 pr-4 leading-none text-${color}`}>
         <IconComponent size="22" />
       </div>
       <EditableDate
@@ -31,7 +31,7 @@ function DraftMetaListDateItem({
         onChangeYear={onChangeYear}
         onEditingDone={onEditingDone}
         color={color}
-        className="inline-block py-2"
+        className="inline-block py-1 text-15 md:text-16"
       />
     </li>
   );

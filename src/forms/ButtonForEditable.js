@@ -27,7 +27,7 @@ function ButtonForEditable({
       </button>);
   } else {
     return (
-      <button onClick={onClick} className={`${className} text-grey ${css}`}>
+      <button onClick={onClick} className={`${className} text-grey text-15 md:text-16 ${css}`}>
         add {label ? label.toLowerCase() : ''}
       </button>);
   }

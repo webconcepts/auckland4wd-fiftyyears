@@ -30,30 +30,30 @@ class TipsSection extends React.Component {
           </div>
           {!this.state.closed && (
             <div className="xl:absolute xl:pin-r xl:pin-b">
-              <Button 
-                iconComponent={ChevronUp} 
-                label="Ok, got it" 
-                iconColor="havelock" 
-                textColor="blackish" 
+              <Button
+                iconComponent={ChevronUp}
+                label="Ok, got it"
+                iconColor="havelock"
+                textColor="blackish"
                 hoverColor="havelock"
                 onClick={() => this.toggle()}
-                className="xl:pb-3 xl:pr-10" 
+                className="xl:pb-3 xl:pr-10"
               />
-            </div>        
+            </div>
           )}
-        </div>        
+        </div>
         {this.state.closed && (
           <div className="absolute pin-r pin-t">
-            <Button 
-              iconComponent={ChevronDown} 
-              label="help" 
+            <Button
+              iconComponent={ChevronDown}
+              label="help"
               textColor="grey"
               hoverColor="havelock"
               onClick={() => this.toggle()}
-              className="py-2 pr-6 md:pr-10" 
-            /> 
-          </div>           
-        )}        
+              className="py-2 pr-6 text-15 md:text-16 md:pr-10"
+            />
+          </div>
+        )}
       </section>
     );
   }

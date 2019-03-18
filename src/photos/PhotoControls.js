@@ -7,13 +7,7 @@ class PhotoControls extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      visible: localStorage.getItem('fiftyyears:photo-controls-hidden') != 'true',
-    };
-
-    if (this.props.onToggleVisibility) {
-      this.props.onToggleVisibility(true);
-    }
+    this.state = {};
 
     this.toggleButton = React.createRef();
 
@@ -46,14 +40,7 @@ class PhotoControls extends React.Component {
   toggleVisibility(event) {
     event.preventDefault();
 
-    const visible = !this.state.visible;
-    this.setState({ visible: visible });
-    localStorage.setItem('fiftyyears:photo-controls-hidden', !visible);
-
-    if (this.props.onToggleVisibility) {
-      this.props.onToggleVisibility(visible);
-    }
-
+    this.props.onToggleVisibility();
     this.toggleButton.current.blur();
   }
 
@@ -78,7 +65,7 @@ class PhotoControls extends React.Component {
             title="Previous photo"
             className="absolute flex items-center justify-start pin-t pin-l w-1/5 h-full pl-4 text-white hover:text-havelock focus:text-havelock"
           >
-            <ChevronLeft size="44" hidden={!this.state.visible} />
+            <ChevronLeft size="44" hidden={this.props.hidden} />
           </Link>
         )}
         { this.props.next && (
@@ -87,7 +74,7 @@ class PhotoControls extends React.Component {
             title="Next photo"
             className="absolute flex items-center justify-end pin-t pin-r w-1/5 h-full pr-4 text-white hover:text-havelock focus:text-havelock"
           >
-            <ChevronRight size="44" hidden={!this.state.visible} />
+            <ChevronRight size="44" hidden={this.props.hidden} />
           </Link>
         )}
         <Link
@@ -95,13 +82,13 @@ class PhotoControls extends React.Component {
           title="Close and return to album"
           className="absolute pin-t pin-r p-6 text-white hover:text-havelock focus:text-havelock"
         >
-          <X size="28" hidden={!this.state.visible} />
+          <X size="28" hidden={this.props.hidden} />
         </Link>
         <button
           ref={this.toggleButton}
           title="Toggle controls"
           onClick={this.toggleVisibility}
-          className={`${this.state.visible ? 'text-grey' : 'text-grey-dark'} absolute pin-t pin-l p-6 hover:text-havelock focus:text-havelock`}
+          className={`${!this.props.hidden ? 'text-grey' : 'text-grey-dark'} absolute pin-t pin-l p-6 hover:text-havelock focus:text-havelock`}
         >
           <Copy size="16" />
         </button>

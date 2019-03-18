@@ -81,9 +81,10 @@ class ItemPhotosState extends React.Component {
 
   handleSave(key, extraData = {}) {
     const state = this.state.photos.find(photo => photo.key == key);
-    const data = { ...state, ...extraData };
+    const { description, number, uploaded } = { ...state, ...extraData };
+    const data = { description, number, uploaded };
 
-    fetchApi('PATCH', 'drafts/photo-albums/' + this.props.id + '/photos/' + data.id, data)
+    fetchApi('PATCH', 'drafts/photo-albums/' + this.props.id + '/photos/' + state.id, data)
       .then(response => jsonOnStatus(response, 200))
       .then(json => this.handleChange(key, json.data))
       .catch(() => { return console.log('uh oh'); });

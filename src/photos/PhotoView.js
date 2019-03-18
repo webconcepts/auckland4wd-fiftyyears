@@ -12,7 +12,8 @@ class PhotoView extends React.Component {
 
     this.state = {
       imgWidth: null,
-      imgHeight: null
+      imgHeight: null,
+      controlsVisible: localStorage.getItem('fiftyyears:photo-controls-hidden') != 'true',
     };
 
     this.handleControlsToggle = this.handleControlsToggle.bind(this);
@@ -38,8 +39,11 @@ class PhotoView extends React.Component {
     }
   }
 
-  handleControlsToggle(visible) {
+  handleControlsToggle() {
+    const visible = !this.state.controlsVisible;
+
     this.setState({ controlsVisible: visible });
+    localStorage.setItem('fiftyyears:photo-controls-hidden', !visible);
   }
 
   render() {
@@ -51,7 +55,7 @@ class PhotoView extends React.Component {
           <React.Fragment>
             <FullscreenImage src={this.context.getSrc(photo.key, this.state.imgWidth, this.state.imgHeight, 'inside')}>
               <div
-                hidden={this.props.hidden}
+                hidden={!this.state.controlsVisible}
                 className="absolute z-1 pin-b pin-l w-full p-3 bg-tint-black text-14 lg:text-16 lg:p-4 xl:px-6"
               >
                 <Editable
@@ -69,6 +73,7 @@ class PhotoView extends React.Component {
               album={this.props.album}
               previous={previous ? previous.id : false}
               next={next ? next.id : false}
+              hidden={!this.state.controlsVisible}
               onToggleVisibility={this.handleControlsToggle}
             />
           </React.Fragment>

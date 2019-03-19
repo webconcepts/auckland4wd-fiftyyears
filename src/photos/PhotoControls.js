@@ -84,14 +84,21 @@ class PhotoControls extends React.Component {
         >
           <X size="28" hidden={this.props.hidden} />
         </Link>
-        <button
-          ref={this.toggleButton}
-          title="Toggle controls"
-          onClick={this.toggleVisibility}
-          className={`${!this.props.hidden ? 'text-grey' : 'text-grey-dark'} absolute pin-t pin-l p-6 hover:text-havelock focus:text-havelock`}
-        >
-          <Copy size="16" />
-        </button>
+        <div className="absolute pin-t pin-l">
+          <button
+            ref={this.toggleButton}
+            title="Toggle controls"
+            onClick={this.toggleVisibility}
+            className={`block float-left ${!this.props.hidden ? 'text-grey' : 'text-grey-dark'} p-6 pr-4 hover:text-havelock focus:text-havelock`}
+          >
+            <Copy size="17" />
+          </button>
+          {this.props.children && (
+            <span hidden={this.props.hidden}>
+              {this.props.children}
+            </span>
+          )}
+        </div>
       </React.Fragment>
     );
   }

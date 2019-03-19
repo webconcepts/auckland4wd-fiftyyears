@@ -16,6 +16,7 @@ class ItemState extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
+    this.handleSetCoverPhoto = this.handleSetCoverPhoto.bind(this);
   }
 
   componentDidMount() {
@@ -36,12 +37,21 @@ class ItemState extends React.Component {
     });
   }
 
-  handleSave() {
+  handleSave(extraData = {}) {
     this.setState({ isUpdating: true });
 
-    fetchApi('PATCH', `drafts/${this.props.apiPath}/${this.props.id}`, this.state.data)
+    fetchApi('PATCH', `drafts/${this.props.apiPath}/${this.props.id}`, { ...this.state.data, ...extraData })
       .then((response) => jsonOnStatus(response, 200))
       .then((json) => this.setState({ data: json.data, isUpdating: false }))
+      .catch(() => this.setState({ isError: true, isUpdating: false }));
+  }
+
+  handleSetCoverPhoto(photoId) {
+    this.setState({ isUpdating: true });
+
+    fetchApi('POST', `drafts/${this.props.apiPath}/${this.props.id}/cover-photo`, { id: photoId })
+      .then((response) => jsonOnStatus(response, 201))
+      .then((json) => this.setState({ data: { cover_photo_id: json.data.id }, isUpdating: false }))
       .catch(() => this.setState({ isError: true, isUpdating: false }));
   }
 
@@ -54,7 +64,8 @@ class ItemState extends React.Component {
           isUpdating: this.state.isUpdating,
           isError: this.state.isError,
           change: this.handleChange,
-          save: this.handleSave
+          save: this.handleSave,
+          setCoverPhoto: this.handleSetCoverPhoto
         }}
       >
         {this.props.children}

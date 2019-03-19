@@ -1,8 +1,9 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 
 import ItemPhotosContext from '../context/item-photos-context';
 import FullscreenImage from './FullscreenImage';
-import PhotoControls from './PhotoControls';
+import DraftPhotoControls from './DraftPhotoControls';
 import PreloadImage from './PreloadImage';
 import Editable from '../forms/Editable';
 
@@ -49,6 +50,10 @@ class PhotoView extends React.Component {
   render() {
     const { photo, next, previous } = this.context.get(this.props.id);
 
+    if (!photo) {
+      return <Redirect to={`/album/${this.props.album}`} />;
+    }
+
     return (
       <section className="fixed w-full h-full z-20 bg-blackish">
         { photo && (
@@ -69,7 +74,9 @@ class PhotoView extends React.Component {
               </div>
               {next && <PreloadImage src={this.context.getSrc(next.key, this.state.imgWidth, this.state.imgHeight, 'inside')} />}
             </FullscreenImage>
-            <PhotoControls
+            <DraftPhotoControls
+              id={photo.id}
+              photoKey={photo.key}
               album={this.props.album}
               previous={previous ? previous.id : false}
               next={next ? next.id : false}

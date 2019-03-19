@@ -9,5 +9,6 @@ export default React.createContext({
   upload: null,
   change: null,
   reorder: null,
-  save: null
+  save: null,
+  remove: null
 });

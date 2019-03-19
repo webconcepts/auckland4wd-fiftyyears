@@ -6,5 +6,6 @@ export default React.createContext({
   isUpdating: false,
   isError: false,
   change: null,
-  save: null
+  save: null,
+  setCoverPhoto: null
 });

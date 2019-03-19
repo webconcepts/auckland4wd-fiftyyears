@@ -18,6 +18,7 @@ class ItemPhotosState extends React.Component {
     this.handleReorder = this.handleReorder.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
   }
 
@@ -87,7 +88,19 @@ class ItemPhotosState extends React.Component {
     fetchApi('PATCH', 'drafts/photo-albums/' + this.props.id + '/photos/' + state.id, data)
       .then(response => jsonOnStatus(response, 200))
       .then(json => this.handleChange(key, json.data))
-      .catch(() => { return console.log('uh oh'); });
+      .catch(error => { return console.log(error); });
+  }
+
+  handleRemove(key) {
+    const state = this.state.photos.find(photo => photo.key == key);
+
+    fetchApi('DELETE', 'drafts/photo-albums/' + this.props.id + '/photos/' + state.id)
+      .then(response => onStatus(response, 200))
+      .then(() => {
+        const photos = this.state.photos.filter(photo => photo.key != key);
+        this.setState({ photos: photos });
+      })
+      .catch(error => { return console.log(error); });
   }
 
   handleUpload(files) {
@@ -160,7 +173,8 @@ class ItemPhotosState extends React.Component {
           upload: this.handleUpload,
           change: this.handleChange,
           reorder: this.handleReorder,
-          save: this.handleSave
+          save: this.handleSave,
+          remove: this.handleRemove
         }}
       >
         {this.props.children}

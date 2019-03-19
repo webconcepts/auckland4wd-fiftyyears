@@ -1,7 +1,7 @@
 
 export function fetchApi(method, url, body = false) {
-  let options = { 
-    method: method,    
+  let options = {
+    method: method,
     headers: {
       'Content-Type': 'application/json'
     }
@@ -16,10 +16,10 @@ export function fetchApi(method, url, body = false) {
     options.headers['Authorization'] = 'Bearer ' + accessToken;
   }
 
-  return fetch('http://localhost/fiftyyears/api/public/' + url, options)
+  return fetch(process.env.REACT_APP_API_URL + url, options)
     .then((response) => {
       if (response.headers.has('x-access_token')) {
-        // store new access token 
+        // store new access token
         window.localStorage.setItem('fiftyyears:access_token', response.headers.get('x-access_token'));
         window.dispatchEvent(new CustomEvent('access_token_updated'));
       } else if (response.status == 401) {

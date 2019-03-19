@@ -18,13 +18,26 @@ function PhotoAlbumTips() {
         A date is needed to place your album on a timeline. If all you can figure out is the
         year, you can leave the day and month blank.
       </p>
+      <TipsHeader>Your photo album will be available to the outside world</TipsHeader>
+      <p>
+        This is a public (but unlisted) website, so your album will also be public once it is
+        published - just something to keep in mind.
+      </p>
       <p>
         <TipsInlineHeader>Description, location, photographer are optional</TipsInlineHeader>
         Leave them blank if they're not needed for your album.
       </p>
       <p>
-        <TipsInlineHeader>Only upload .jpg (jpeg) images</TipsInlineHeader>
+        <TipsInlineHeader>Add captions to your photos</TipsInlineHeader>
+        Click/tap on a photo to view the full size image and add a caption if applicable.
+      </p>
+      <p>
+        <TipsInlineHeader>Only upload jpeg (.jpg) images</TipsInlineHeader>
         If you need help converting your images, <a href="https://www.google.com/search?q=convert+images+to+jpeg">ask google first</a>.
+      </p>
+      <p>
+        <TipsInlineHeader>Drag and drop</TipsInlineHeader>
+        You can drag and drop your photos to re-order them.
       </p>
       <p>
         <TipsInlineHeader>Need some help?</TipsInlineHeader>

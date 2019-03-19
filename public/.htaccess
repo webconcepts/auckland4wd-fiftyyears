@@ -1,0 +1,42 @@
+<IfModule mod_expires.c>
+    ExpiresActive on
+
+    # Your document html
+    ExpiresByType text/html                 "access plus 0 seconds"
+
+    # Data
+    ExpiresByType text/xml                  "access plus 0 seconds"
+    ExpiresByType application/xml           "access plus 0 seconds"
+    ExpiresByType application/json          "access plus 0 seconds"
+
+    # Favicon (cannot be renamed)
+    #ExpiresByType image/x-icon              "access plus 1 week"
+
+    # Media: images
+    #ExpiresByType image/gif                 "access plus 1 month"
+    #ExpiresByType image/png                 "access plus 1 month"
+    #ExpiresByType image/jpg                 "access plus 1 month"
+    #ExpiresByType image/jpeg                "access plus 1 month"
+    #ExpiresByType image/svg                 "access plus 1 month"
+    #ExpiresByType image/svg+xml             "access plus 1 month"
+
+    # CSS and JavaScript
+    ExpiresByType text/css                  "access plus 1 year"
+    ExpiresByType application/javascript    "access plus 1 year"
+    ExpiresByType text/javascript           "access plus 1 year"
+</IfModule>
+
+Options -MultiViews
+RewriteEngine On
+
+# Force no www
+RewriteCond %{HTTP_HOST} ^www.fiftyyears.auckland4wd.org.nz [NC]
+RewriteRule ^(.*)$ https://fiftyyears.auckland4wd.org.nz/$1 [L,R=302,NC]
+
+# Force HTTPS
+RewriteCond %{HTTP_HOST} ^fiftyyears.auckland4wd.org.nz [NC]
+RewriteCond %{HTTPS} off
+RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=302]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.html [QSA,L]

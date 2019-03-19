@@ -15,7 +15,7 @@ function ContentPageHeader(props) {
         className="inline-block font-normal text-shadow text-29 md:text-34 lg:text-41"
         value={props.value}
         onChange={props.onChange}
-        onEditingDone={props.onSave}
+        onEditingDone={props.onEditingDone}
       />
     </Component>
   );

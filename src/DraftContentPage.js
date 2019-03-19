@@ -11,7 +11,14 @@ import { MapPin, Calendar } from 'react-feather';
 
 class DraftContentPage extends React.Component {
   render() {
-    const TipsComponent = this.props.tipsComponent;
+    const {
+      TipsComponent,
+      authorshipLabel,
+      authorshipIcon,
+      children,
+      includeLocation = true,
+      includeAuthorship = true
+    } = this.props;
 
     if (this.context.isLoading) {
       return <PageSpinner />;
@@ -19,7 +26,7 @@ class DraftContentPage extends React.Component {
 
     return (
       <React.Fragment>
-        {this.props.tipsComponent && <TipsComponent />}
+        <TipsComponent />
         <ContentPageHeader
           value={this.context.data.title}
           onChange={(e) => this.context.change('title', e.target.value)}
@@ -40,22 +47,26 @@ class DraftContentPage extends React.Component {
                 label="Date"
                 iconComponent={Calendar}
               />
-              <DraftMetaListItem
-                value={this.context.data.location}
-                onChange={(e) => this.context.change('location', e.target.value)}
-                onEditingDone={this.context.save}
-                color="monza"
-                label="Location"
-                iconComponent={MapPin}
-              />
-              <DraftMetaListItem
-                value={this.context.data.authorship}
-                onChange={(e) => this.context.change('authorship', e.target.value)}
-                onEditingDone={this.context.save}
-                color="havelock"
-                label={this.props.authorshipLabel}
-                iconComponent={this.props.authorshipIcon}
-              />
+              {includeLocation && (
+                <DraftMetaListItem
+                  value={this.context.data.location}
+                  onChange={(e) => this.context.change('location', e.target.value)}
+                  onEditingDone={this.context.save}
+                  color="monza"
+                  label="Location"
+                  iconComponent={MapPin}
+                />
+              )}
+              {includeAuthorship && (
+                <DraftMetaListItem
+                  value={this.context.data.authorship}
+                  onChange={(e) => this.context.change('authorship', e.target.value)}
+                  onEditingDone={this.context.save}
+                  color="havelock"
+                  label={authorshipLabel}
+                  iconComponent={authorshipIcon}
+                />
+              )}
             </ul>
             <div className="py-8">
               <Editable
@@ -68,7 +79,7 @@ class DraftContentPage extends React.Component {
               />
             </div>
           </div>
-          {this.props.children}
+          {children}
         </main>
         <ContentPageFooter linkBackTo="/" />
       </React.Fragment>

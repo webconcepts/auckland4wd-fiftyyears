@@ -6,7 +6,7 @@ import PageHeader from './common/PageHeader';
 import ToggleViewButton from './common/ToggleViewButton';
 import CreateItemForm from './CreateItemForm';
 import DraftsList from './common/DraftsList';
-import { Image, Video } from 'react-feather';
+import { Image, Film, Bookmark } from 'react-feather';
 
 function HomePage(props) {
   return (
@@ -41,13 +41,23 @@ function HomePage(props) {
               </ToggleViewButton>
               <ToggleViewButton
                 label="Create a video"
-                iconComponent={Video}
+                iconComponent={Film}
                 iconColor="monza"
                 hoverColor="monza"
                 hideByDefault={true}
                 onlyOnce={true}
               >
                 <CreateItemForm apiPath="videos" urlPath="video" label="Video" />
+              </ToggleViewButton>
+              <ToggleViewButton
+                label="Create a milestone"
+                iconComponent={Bookmark}
+                iconColor="havelock"
+                hoverColor="havelock"
+                hideByDefault={true}
+                onlyOnce={true}
+              >
+                <CreateItemForm apiPath="milestones" urlPath="milestone" label="Milestone" />
               </ToggleViewButton>
               {context.id && (
                 <div className="mt-16">

@@ -11,7 +11,7 @@ function VideoPage(props) {
   return (
     <ItemState apiPath="videos" id={props.match.params.id}>
       <DraftContentPage
-        tipsComponent={VideoTips}
+        TipsComponent={VideoTips}
         authorshipLabel="Videographer"
         authorshipIcon={Video}
       >

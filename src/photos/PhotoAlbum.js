@@ -17,9 +17,8 @@ function PhotoAlbum(props) {
           <PhotoView key={props.match.params.photoId} id={props.match.params.photoId} album={props.match.params.id} />
         )} />
         <DraftContentPage
-          tipsComponent={PhotoAlbumTips}
-          authorshipLabel="Videographer"
-          authorshipName="videographer"
+          TipsComponent={PhotoAlbumTips}
+          authorshipLabel="Photographer"
           authorshipIcon={Camera}
         >
           <PhotoGrid history={props.history} match={props.match} albumId={props.match.params.id} />

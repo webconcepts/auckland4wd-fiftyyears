@@ -11,6 +11,7 @@ class DraftsList extends React.Component {
     videos: [],
     isLoadingAlbums: true,
     isLoadingVideos: true,
+    isLoadingMilestones: true,
     isError: false
   }
 
@@ -26,10 +27,15 @@ class DraftsList extends React.Component {
       .then((response) => jsonOnStatus(response, 200))
       .then((json) => this.setState({ videos: json.data, isLoadingVideos: false }))
       .catch(() => this.setState({ isError: true, isLoadingVideos: false }));
+
+    fetchApi('GET', 'drafts/milestones' + urlSuffix)
+      .then((response) => jsonOnStatus(response, 200))
+      .then((json) => this.setState({ milestones: json.data, isLoadingMilestones: false }))
+      .catch(() => this.setState({ isError: true, isLoadingMilestones: false }));
   }
 
   render() {
-    if (this.state.isLoadingAlbums || this.state.isLoadingVideos) {
+    if (this.state.isLoadingAlbums || this.state.isLoadingVideos || this.state.isLoadingMilestones) {
       return <Spinner size="50" className="py-10" />;
     }
 
@@ -48,6 +54,9 @@ class DraftsList extends React.Component {
         )}
         {this.state.videos.length > 0 && (
           <DraftItemsList items={this.state.videos} label="Videos" color="monza" linkPath="video" />
+        )}
+        {this.state.milestones.length > 0 && (
+          <DraftItemsList items={this.state.milestones} label="Milestones" color="havelock" linkPath="milestone" />
         )}
         {!this.props.user && (
           <p className="leading-normal font-light mt-10">

@@ -53,3 +53,6 @@ export function handleJsonByStatus(response, statusHandlers) {
   throw new Error(`${response.status} ${response.statusText}`);
 }
 
+export function FetchApiMissing({ children }) {
+  return window.fetch ? null : children;
+}

@@ -14,7 +14,7 @@ class Editable extends React.Component {
     this.contentEditable = React.createRef();
 
     this.toggleEditing = this.toggleEditing.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
   toggleEditing() {
@@ -27,9 +27,22 @@ class Editable extends React.Component {
     }
   }
 
-  handleKeyPress(event) {
-    if (event.key === 'Enter' && !this.props.multiline) {
+  handleKeyDown(e) {
+    switch (e.keyCode) {
+    case 13: // enter
+      if (!this.props.multiline) {
+        e.stopPropagation();
+        this.toggleEditing();
+      }
+      break;
+    case 27: // esc
+      e.stopPropagation();
       this.toggleEditing();
+      break;
+    case 37: // left arrow
+    case 39: // right arrow
+      e.stopPropagation();
+      break;
     }
   }
 
@@ -47,7 +60,7 @@ class Editable extends React.Component {
           html={this.props.value ? this.props.value : ''}
           disabled={!this.state.editing}
           onChange={this.props.onChange}
-          onKeyPress={this.handleKeyPress}
+          onKeyDown={this.handleKeyDown}
           tagName={this.props.tagName ? this.props.tagName : 'div'}
           className={`focus:outline-none ${this.props.className} ${this.state.editing && 'min-w-1 text-dust bg-tint-white'}`}
         />

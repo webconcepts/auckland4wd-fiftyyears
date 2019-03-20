@@ -14,7 +14,7 @@ class PhotoGrid extends React.Component {
     };
 
     this.fileInput = React.createRef();
-    this.handleUpload = this.handleUpload.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
   }
 
   handleDrag(e, index) {
@@ -31,9 +31,9 @@ class PhotoGrid extends React.Component {
     this.context.reorder(this.state.draggedIndex, insertBeforeIndex);
   }
 
-  handleUpload() {
+  handleAdd() {
     const fileInput = this.fileInput.current;
-    this.context.upload(fileInput.files);
+    this.context.add(fileInput.files);
   }
 
   render() {
@@ -62,7 +62,7 @@ class PhotoGrid extends React.Component {
         <li className="block bg-blackish-light" key={'uploadbutton'}>
           <PhotoGridAddItem
             ref={this.fileInput}
-            onChange={this.handleUpload}
+            onChange={this.handleAdd}
           />
         </li>
       </ul>

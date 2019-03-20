@@ -6,7 +6,7 @@ export default React.createContext({
   isError: false,
   get: null,
   getSrc: null,
-  upload: null,
+  add: null,
   change: null,
   reorder: null,
   save: null,

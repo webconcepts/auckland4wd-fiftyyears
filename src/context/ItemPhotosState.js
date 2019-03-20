@@ -19,7 +19,7 @@ class ItemPhotosState extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
-    this.handleUpload = this.handleUpload.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
   }
 
   componentDidMount() {
@@ -70,12 +70,13 @@ class ItemPhotosState extends React.Component {
   }
 
   handleReorder(index, insertBefore) {
-    const photoToUpdate = this.state.photos[index];
-    photoToUpdate.number = this.state.photos[insertBefore].number;
-    this.handleSave(photoToUpdate.key, photoToUpdate);
+    this.handleSave(this.state.photos[index].key, { number: this.state.photos[insertBefore].number });
 
-    // reorder state array
-    const photos = this.reorderArray(this.state.photos, index, insertBefore);
+    // reorder state array and increment larger numbers
+    const photos = this.reorderArray(this.state.photos, index, insertBefore).map((photo, i) => {
+      photo.number = (i > insertBefore) ? photo.number + 1 : photo.number;
+      return photo;
+    });
 
     this.setState({ photos });
   }
@@ -103,26 +104,38 @@ class ItemPhotosState extends React.Component {
       .catch(error => { return console.log(error); });
   }
 
-  handleUpload(files) {
+  handleAdd(files) {
     let photos = this.state.photos;
+    let toUpload = [];
 
     if (files) {
       for (let i = 0; i < files.length; i++) {
-        // only accept image files
-        if (!files[i].type.startsWith('image/')) {
+        // only accept jpeg image files
+        if (!files[i].type.startsWith('image/jp')) {
           return;
         }
 
-        // queue api requests, and get data to add to state
-        photos.push(this.addNewPhoto(photos.length + 1, files[i]));
+        toUpload.push({
+          key: photos.length + 1,
+          file: files[i]
+        });
+        photos.push({
+          'key': photos.length + 1,
+          'id': null,
+          'src': window.URL.createObjectURL(files[i]),
+          'uploaded': false,
+        });
       }
 
       this.setState({ photos });
+      this.uploadPhotos(toUpload);
     }
   }
 
-  addNewPhoto(key, file) {
-    // create new db record for photo
+  uploadPhotos(photos) {
+    const { key, file } = photos.shift();
+
+    // create the first photo
     fetchApi('POST', 'drafts/photo-albums/' + this.props.id + '/photos', {
       filename: file.name,
       type: file.type
@@ -130,6 +143,9 @@ class ItemPhotosState extends React.Component {
       .then(response => jsonOnStatus(response, 201))
       .then(json => {
         this.handleChange(key, json.data);
+        if (photos.length) {
+          this.uploadPhotos(photos); // create next photo
+        }
 
         // upload file to S3, and then update db record
         fetch(json.upload.url, { method: 'POST', body: this.buildS3UploadBody(json.upload.data, file) })
@@ -138,15 +154,6 @@ class ItemPhotosState extends React.Component {
           .catch((error) => console.log(error));
       })
       .catch();
-
-    // return image data to add to state
-    return {
-      'key': key,
-      'id': null,
-      'src': window.URL.createObjectURL(file),
-      'uploaded': false,
-      'tmpFile': file
-    };
   }
 
   buildS3UploadBody(data, file) {
@@ -170,7 +177,7 @@ class ItemPhotosState extends React.Component {
           isError: this.state.isError,
           get: this.handleGet,
           getSrc: this.handleGetSrc,
-          upload: this.handleUpload,
+          add: this.handleAdd,
           change: this.handleChange,
           reorder: this.handleReorder,
           save: this.handleSave,

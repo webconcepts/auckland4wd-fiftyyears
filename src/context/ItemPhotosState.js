@@ -51,7 +51,7 @@ class ItemPhotosState extends React.Component {
   handleGetSrc(key, width, height, crop = '') {
     const photo = this.state.photos.find(photo => photo.key == key);
 
-    if (photo.src) {
+    if (photo.src && !photo.uploaded) {
       return photo.src;
     }
 

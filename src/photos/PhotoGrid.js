@@ -54,6 +54,7 @@ class PhotoGrid extends React.Component {
           >
             <PhotoGridItem
               src={this.context.getSrc(photo.key, 300, 300)}
+              placeholder={photo.uploaded && photo.src ? photo.src : null}
               uploading={photo.uploaded == false}
               linkTo={`${this.props.match.url}/photo/${photo.id}`}
             />

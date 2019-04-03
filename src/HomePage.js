@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import UserContext from './context/user-context';
 import TimelineContext from './context/timeline-context';
+import ScrollRestoration from './router/ScrollRestoration';
 import PageHeader from './common/PageHeader';
 import Button from './common/Button';
 import Timeline from './timeline/Timeline';
@@ -11,6 +12,7 @@ import { Plus } from 'react-feather';
 function HomePage(props) {
   return (
     <React.Fragment>
+      <ScrollRestoration url={props.match.url} />
       <PageHeader />
       <div className="max-w-md mx-auto px-6 pt-10 pb-16">
         <p className="text-24 md:text-32 sm:text-center font-light pb-8 leading-tightish">

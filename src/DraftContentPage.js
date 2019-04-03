@@ -1,9 +1,12 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 
 import ItemContext from './context/item-context';
+import UserContext from './context/user-context';
 import ContentPageHeader from './common/ContentPageHeader';
 import ContentPageFooter from './common/ContentPageFooter';
 import Editable from './forms/Editable';
+import MetaListItem from './common/MetaListItem';
 import DraftMetaListItem from './common/DraftMetaListItem';
 import DraftMetaListDateItem from './common/DraftMetaListDateItem';
 import PageSpinner from './common/PageSpinner';
@@ -22,6 +25,8 @@ class DraftContentPage extends React.Component {
 
     if (this.context.isLoading) {
       return <PageSpinner />;
+    } else if (this.context.isRemoved) {
+      return <Redirect to="/contribute" />;
     }
 
     return (
@@ -68,6 +73,19 @@ class DraftContentPage extends React.Component {
                   iconComponent={authorshipIcon}
                 />
               )}
+              <UserContext.Consumer>
+                {context => context.editor && (
+                  <MetaListItem>
+                    <button
+                      onClick={this.context.publish}
+                      className="relative uppercase text-grey-light text-14 bg-blackish-light py-2 px-4 hover:bg-monza hover:text-white"
+                      style={{ top: '-5px' }}
+                    >
+                      Publish
+                    </button>
+                  </MetaListItem>
+                )}
+              </UserContext.Consumer>
             </ul>
             <div className="py-8">
               <Editable

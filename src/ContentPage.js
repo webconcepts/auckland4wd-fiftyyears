@@ -1,7 +1,9 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { monthName } from './utils/date';
 
 import ItemContext from './context/item-context';
+import UserContext from './context/user-context';
 import ContentPageHeader from './common/ContentPageHeader';
 import ContentPageFooter from './common/ContentPageFooter';
 import Editable from './forms/Editable';
@@ -20,6 +22,8 @@ class ContentPage extends React.Component {
 
     if (this.context.isLoading) {
       return <PageSpinner />;
+    } else if (this.context.isRemoved) {
+      return <Redirect to={`/draft/${this.context.data.type ? this.context.data.type : 'milestone'}/${this.context.data.id}`} />;
     }
 
     return (
@@ -44,6 +48,19 @@ class ContentPage extends React.Component {
                   {this.context.data.authorship}
                 </MetaListItem>
               )}
+              <UserContext.Consumer>
+                {context => context.editor && (
+                  <MetaListItem>
+                    <button
+                      onClick={this.context.unpublish}
+                      className="relative uppercase text-grey-light text-14 bg-blackish-light py-2 px-4 hover:bg-monza hover:text-white"
+                      style={{ top: '-5px' }}
+                    >
+                      Unpublish
+                    </button>
+                  </MetaListItem>
+                )}
+              </UserContext.Consumer>
             </ul>
             <div className="py-8">
               <div
@@ -54,7 +71,7 @@ class ContentPage extends React.Component {
           </div>
           {children}
         </main>
-        <ContentPageFooter linkBackTo={{ pathname: '/', state: { scrollRestoration: true }}} />
+        <ContentPageFooter linkBackTo="/" />
       </React.Fragment>
     );
   }

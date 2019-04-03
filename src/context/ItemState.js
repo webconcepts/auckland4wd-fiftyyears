@@ -1,5 +1,5 @@
 import React from 'react';
-import { fetchApi, jsonOnStatus, handleJsonByStatus } from '../utils/api';
+import { fetchApi, jsonOnStatus, onStatus, handleJsonByStatus } from '../utils/api';
 
 import ItemContext from './item-context';
 
@@ -11,11 +11,14 @@ class ItemState extends React.Component {
       data: {},
       isLoading: true,
       isUpdating: false,
-      isError: false
+      isError: false,
+      isRemoved: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
+    this.handlePublish = this.handlePublish.bind(this);
+    this.handleUnpublish = this.handleUnpublish.bind(this);
     this.handleSetCoverPhoto = this.handleSetCoverPhoto.bind(this);
   }
 
@@ -50,6 +53,24 @@ class ItemState extends React.Component {
       .catch(() => this.setState({ isError: true, isUpdating: false }));
   }
 
+  handlePublish() {
+    this.setState({ isUpdating: true });
+
+    fetchApi('POST', this.props.apiPath, { id: this.state.data.id })
+      .then((response) => onStatus(response, 201))
+      .then(() => this.setState({ isUpdating: false, isRemoved: true }))
+      .catch(() => this.setState({ isError: true, isUpdating: false }));
+  }
+
+  handleUnpublish() {
+    this.setState({ isUpdating: true });
+
+    fetchApi('DELETE', `${this.props.apiPath}/${this.state.data.id}`)
+      .then((response) => onStatus(response, 200))
+      .then(() => this.setState({ isUpdating: false, isRemoved: true }))
+      .catch(() => this.setState({ isError: true, isUpdating: false }));
+  }
+
   handleSetCoverPhoto(photoId) {
     this.setState({ isUpdating: true });
 
@@ -67,8 +88,11 @@ class ItemState extends React.Component {
           isLoading: this.state.isLoading,
           isUpdating: this.state.isUpdating,
           isError: this.state.isError,
+          isRemoved: this.state.isRemoved,
           change: this.handleChange,
           save: this.handleSave,
+          publish: this.handlePublish,
+          unpublish: this.handleUnpublish,
           setCoverPhoto: this.handleSetCoverPhoto
         }}
       >

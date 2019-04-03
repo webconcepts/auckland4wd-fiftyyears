@@ -5,7 +5,10 @@ export default React.createContext({
   isLoading: true,
   isUpdating: false,
   isError: false,
+  isRemoved: false,
   change: null,
   save: null,
+  publish: null,
+  unpublish: null,
   setCoverPhoto: null
 });

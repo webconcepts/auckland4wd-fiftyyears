@@ -28,7 +28,9 @@ class PhotoGrid extends React.Component {
 
   handleDrop(e, insertBeforeIndex) {
     e.preventDefault();
-    this.context.reorder(this.state.draggedIndex, insertBeforeIndex);
+    if (this.props.editable) {
+      this.context.reorder(this.state.draggedIndex, insertBeforeIndex);
+    }
   }
 
   handleAdd() {
@@ -47,7 +49,7 @@ class PhotoGrid extends React.Component {
           <li
             className="block"
             key={photo.key}
-            draggable={photo.uploaded}
+            draggable={this.props.editable && photo.uploaded}
             onDrag={(event) => this.handleDrag(event, i)}
             onDragOver={(event) => this.handleDragOver(event)}
             onDrop={(event) => this.handleDrop(event, i)}
@@ -60,12 +62,14 @@ class PhotoGrid extends React.Component {
             />
           </li>
         )}
-        <li className="block bg-blackish-light" key={'uploadbutton'}>
-          <PhotoGridAddItem
-            ref={this.fileInput}
-            onChange={this.handleAdd}
-          />
-        </li>
+        {this.props.editable && (
+          <li className="block bg-blackish-light" key={'uploadbutton'}>
+            <PhotoGridAddItem
+              ref={this.fileInput}
+              onChange={this.handleAdd}
+            />
+          </li>
+        )}
       </ul>
     );
   }

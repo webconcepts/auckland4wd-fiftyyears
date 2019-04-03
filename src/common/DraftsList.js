@@ -50,13 +50,13 @@ class DraftsList extends React.Component {
           </FeedbackMessage>
         }
         {this.state.albums.length > 0 && (
-          <DraftItemsList items={this.state.albums} label="Photo albums" color="buttercup" linkPath="album" />
+          <DraftItemsList items={this.state.albums} label="Photo albums" color="buttercup" linkPath="draft/photo-album" />
         )}
         {this.state.videos.length > 0 && (
-          <DraftItemsList items={this.state.videos} label="Videos" color="monza" linkPath="video" />
+          <DraftItemsList items={this.state.videos} label="Videos" color="monza" linkPath="draft/video" />
         )}
         {this.state.milestones.length > 0 && (
-          <DraftItemsList items={this.state.milestones} label="Milestones" color="havelock" linkPath="milestone" />
+          <DraftItemsList items={this.state.milestones} label="Milestones" color="havelock" linkPath="draft/milestone" />
         )}
         {!this.props.user && (
           <p className="leading-normal font-light mt-10">

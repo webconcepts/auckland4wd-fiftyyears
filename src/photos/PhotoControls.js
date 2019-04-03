@@ -78,7 +78,7 @@ class PhotoControls extends React.Component {
           </Link>
         )}
         <Link
-          to={`/album/${this.props.album}`}
+          to={this.props.albumUrl}
           title="Close and return to album"
           className="absolute pin-t pin-r p-6 text-white hover:text-havelock focus:text-havelock"
         >

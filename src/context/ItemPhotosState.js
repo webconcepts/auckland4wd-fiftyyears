@@ -22,8 +22,12 @@ class ItemPhotosState extends React.Component {
     this.handleAdd = this.handleAdd.bind(this);
   }
 
+  resourceUrl() {
+    return `${this.props.draft ? 'drafts/' : ''}photo-albums/${this.props.id}/photos`;
+  }
+
   componentDidMount() {
-    fetchApi('GET', 'drafts/photo-albums/' + this.props.id + '/photos')
+    fetchApi('GET', this.resourceUrl())
       .then((response) => jsonOnStatus(response, 200))
       .then((json) => {
         const photos = json.data.map((photo, i) => {
@@ -86,7 +90,7 @@ class ItemPhotosState extends React.Component {
     const { description, number, uploaded } = { ...state, ...extraData };
     const data = { description, number, uploaded };
 
-    fetchApi('PATCH', 'drafts/photo-albums/' + this.props.id + '/photos/' + state.id, data)
+    fetchApi('PATCH', this.resourceUrl() + '/' + state.id, data)
       .then(response => jsonOnStatus(response, 200))
       .then(json => this.handleChange(key, json.data))
       .catch(error => { return console.log(error); });
@@ -95,7 +99,7 @@ class ItemPhotosState extends React.Component {
   handleRemove(key) {
     const state = this.state.photos.find(photo => photo.key == key);
 
-    fetchApi('DELETE', 'drafts/photo-albums/' + this.props.id + '/photos/' + state.id)
+    fetchApi('DELETE', this.resourceUrl() + '/' + state.id)
       .then(response => onStatus(response, 200))
       .then(() => {
         const photos = this.state.photos.filter(photo => photo.key != key);
@@ -136,7 +140,7 @@ class ItemPhotosState extends React.Component {
     const { key, file } = photos.shift();
 
     // create the first photo
-    fetchApi('POST', 'drafts/photo-albums/' + this.props.id + '/photos', {
+    fetchApi('POST', this.resourceUrl(), {
       filename: file.name,
       type: file.type
     })

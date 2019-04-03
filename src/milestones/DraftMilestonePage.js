@@ -4,9 +4,9 @@ import ItemState from '../context/ItemState';
 import DraftContentPage from '../DraftContentPage';
 import MilestoneTips from './MilestoneTips';
 
-function MilestonePage(props) {
+function DraftMilestonePage(props) {
   return (
-    <ItemState apiPath="milestones" id={props.match.params.id}>
+    <ItemState apiPath="milestones" id={props.match.params.id} draft={true}>
       <DraftContentPage
         TipsComponent={MilestoneTips}
         includeAuthorship={false}
@@ -16,4 +16,4 @@ function MilestonePage(props) {
   );
 }
 
-export default MilestonePage;
+export default DraftMilestonePage;

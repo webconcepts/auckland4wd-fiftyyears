@@ -19,8 +19,12 @@ class ItemState extends React.Component {
     this.handleSetCoverPhoto = this.handleSetCoverPhoto.bind(this);
   }
 
+  resourceUrl() {
+    return `${this.props.draft ? 'drafts' : ''}/${this.props.apiPath}/${this.props.id}`;
+  }
+
   componentDidMount() {
-    fetchApi('GET', `drafts/${this.props.apiPath}/${this.props.id}`)
+    fetchApi('GET', this.resourceUrl())
       .then((response) => handleJsonByStatus(response, {
         200: (json) => this.setState({ data: json.data, isLoading: false })
         // 404: redirect to page not found
@@ -40,7 +44,7 @@ class ItemState extends React.Component {
   handleSave(extraData = {}) {
     this.setState({ isUpdating: true });
 
-    fetchApi('PATCH', `drafts/${this.props.apiPath}/${this.props.id}`, { ...this.state.data, ...extraData })
+    fetchApi('PATCH', this.resourceUrl(), { ...this.state.data, ...extraData })
       .then((response) => jsonOnStatus(response, 200))
       .then((json) => this.setState({ data: json.data, isUpdating: false }))
       .catch(() => this.setState({ isError: true, isUpdating: false }));
@@ -49,7 +53,7 @@ class ItemState extends React.Component {
   handleSetCoverPhoto(photoId) {
     this.setState({ isUpdating: true });
 
-    fetchApi('POST', `drafts/${this.props.apiPath}/${this.props.id}/cover-photo`, { id: photoId })
+    fetchApi('POST', this.resourceUrl() + '/cover-photo', { id: photoId })
       .then((response) => jsonOnStatus(response, 201))
       .then((json) => this.setState({ data: { cover_photo_id: json.data.id }, isUpdating: false }))
       .catch(() => this.setState({ isError: true, isUpdating: false }));

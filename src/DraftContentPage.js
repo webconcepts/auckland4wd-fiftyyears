@@ -29,6 +29,7 @@ class DraftContentPage extends React.Component {
         <TipsComponent />
         <ContentPageHeader
           value={this.context.data.title}
+          editable={true}
           onChange={(e) => this.context.change('title', e.target.value)}
           onEditingDone={this.context.save}
         />
@@ -81,7 +82,7 @@ class DraftContentPage extends React.Component {
           </div>
           {children}
         </main>
-        <ContentPageFooter linkBackTo="/" />
+        <ContentPageFooter linkBackTo="/contribute" />
       </React.Fragment>
     );
   }

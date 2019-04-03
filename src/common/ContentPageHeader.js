@@ -5,18 +5,22 @@ import Editable from '../forms/Editable';
 function ContentPageHeader(props) {
   // const Component = props.img ? ContentPageHeaderImage : ContentPageHeaderBasic;
   const Component = ContentPageHeaderBasic;
+  const classes = 'inline-block font-normal text-shadow text-29 md:text-34 lg:text-41';
 
   return (
     <Component {...props}>
-      { /* <h1 className="text-41 font-normal">{props.title}</h1> */ }
-      <Editable
-        name="title"
-        tagName="h1"
-        className="inline-block font-normal text-shadow text-29 md:text-34 lg:text-41"
-        value={props.value}
-        onChange={props.onChange}
-        onEditingDone={props.onEditingDone}
-      />
+      {props.editable ? (
+        <Editable
+          name="title"
+          tagName="h1"
+          className={classes}
+          value={props.value}
+          onChange={props.onChange}
+          onEditingDone={props.onEditingDone}
+        />
+      ) : (
+        <h1 className={classes}>{props.value}</h1>
+      )}
     </Component>
   );
 }

@@ -18,6 +18,7 @@ class ItemPhotosState extends React.Component {
     this.handleReorder = this.handleReorder.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSave = this.handleSave.bind(this);
+    this.handleLike = this.handleLike.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
   }
@@ -91,6 +92,15 @@ class ItemPhotosState extends React.Component {
     const data = { description, number, uploaded };
 
     fetchApi('PATCH', this.resourceUrl() + '/' + state.id, data)
+      .then(response => jsonOnStatus(response, 200))
+      .then(json => this.handleChange(key, json.data))
+      .catch(error => { return console.log(error); });
+  }
+
+  handleLike(key) {
+    const state = this.state.photos.find(photo => photo.key == key);
+
+    fetchApi('POST', this.resourceUrl() + '/' + state.id  + '/likes', { likes: 1 })
       .then(response => jsonOnStatus(response, 200))
       .then(json => this.handleChange(key, json.data))
       .catch(error => { return console.log(error); });
@@ -185,6 +195,7 @@ class ItemPhotosState extends React.Component {
           change: this.handleChange,
           reorder: this.handleReorder,
           save: this.handleSave,
+          like: this.handleLike,
           remove: this.handleRemove
         }}
       >

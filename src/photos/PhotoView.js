@@ -76,7 +76,7 @@ class PhotoView extends React.Component {
                       name="caption"
                       value={photo.description}
                       onChange={(e) => this.context.change(photo.key, { description: e.target.value })}
-                      onEditingDone={(e) => this.context.save(photo.key)}
+                      onEditingDone={() => this.context.save(photo.key)}
                       buttonColor="white"
                       className="font-light inline-block pb-1"
                     />
@@ -98,8 +98,10 @@ class PhotoView extends React.Component {
               albumUrl={this.props.albumUrl}
               previous={previous ? previous.id : false}
               next={next ? next.id : false}
+              likes={photo.likes}
               hidden={!this.state.controlsVisible}
               onToggleVisibility={this.handleControlsToggle}
+              onLike={() => this.context.like(photo.key)}
             />
           </React.Fragment>
         )}

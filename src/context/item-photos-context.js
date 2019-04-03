@@ -10,5 +10,6 @@ export default React.createContext({
   change: null,
   reorder: null,
   save: null,
+  like: null,
   remove: null
 });

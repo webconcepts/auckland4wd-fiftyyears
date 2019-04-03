@@ -7,9 +7,15 @@ class Spinner extends React.Component {
 
   componentDidMount() {
     if (this.props.delay) {
-      setTimeout(() => { this.setState({ visible: true }); }, this.props.delay * 1000);
+      this.timeoutId = setTimeout(() => { this.setState({ visible: true }); }, this.props.delay * 1000);
     } else {
       this.setState({ visible: true });
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
     }
   }
 

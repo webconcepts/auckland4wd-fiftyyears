@@ -14,10 +14,16 @@ class PageHeader extends React.Component {
   }
 
   componentDidMount() {
-    window.setTimeout(() => {
+    this.timeoutId = window.setTimeout(() => {
       this.setState({ logoVisible: 2 });
-      window.setTimeout(() => { this.setState({ logoVisible: 3 }); }, 3600)
+      this.timeoutId = window.setTimeout(() => { this.setState({ logoVisible: 3 }); }, 3600)
     }, 3200);
+  }
+
+  componentWillUnmount() {
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+    }
   }
 
   render() {

@@ -76,7 +76,11 @@ class ItemState extends React.Component {
 
     fetchApi('POST', this.resourceUrl() + '/cover-photo', { id: photoId })
       .then((response) => jsonOnStatus(response, 201))
-      .then((json) => this.setState({ data: { cover_photo_id: json.data.id }, isUpdating: false }))
+      .then((json) => {
+        const data = this.state.data;
+        data.cover_photo_id = json.data.id;
+        this.setState({ data: data, isUpdating: false });
+      })
       .catch(() => this.setState({ isError: true, isUpdating: false }));
   }
 

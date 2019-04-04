@@ -6,9 +6,8 @@ import ItemContext from './context/item-context';
 import UserContext from './context/user-context';
 import ContentPageHeader from './common/ContentPageHeader';
 import ContentPageFooter from './common/ContentPageFooter';
-import Editable from './forms/Editable';
 import MetaListItem from './common/MetaListItem';
-import DraftMetaListDateItem from './common/DraftMetaListDateItem';
+import PublishButton from './common/PublishButton';
 import PageSpinner from './common/PageSpinner';
 import { MapPin, Calendar } from 'react-feather';
 
@@ -30,7 +29,7 @@ class ContentPage extends React.Component {
       <React.Fragment>
         <ContentPageHeader value={this.context.data.title} />
         <main>
-          <div className="max-w-lg xl:max-w-xl mx-auto px-6 md:px-10 py-8">
+          <div className="max-w-lg xl:max-w-xl mx-auto p-6 md:px-10 md:py-8">
             <ul className="list-reset">
               {this.context.data.approx_year && (
                 <MetaListItem label="Date" iconComponent={Calendar} color="buttercup">
@@ -51,23 +50,17 @@ class ContentPage extends React.Component {
               <UserContext.Consumer>
                 {context => context.editor && (
                   <MetaListItem>
-                    <button
-                      onClick={this.context.unpublish}
-                      className="relative uppercase text-grey-light text-14 bg-blackish-light py-2 px-4 hover:bg-monza hover:text-white"
-                      style={{ top: '-5px' }}
-                    >
-                      Unpublish
-                    </button>
+                    <PublishButton onClick={this.context.unpublish} label="Unpublish" />
                   </MetaListItem>
                 )}
               </UserContext.Consumer>
             </ul>
-            <div className="py-8">
+            {(this.context.data.description) && (
               <div
                 dangerouslySetInnerHTML={{__html: this.context.data.description}}
-                className="typography leading-normal font-light text-15 md:text-16"
+                className="typography py-8 leading-normal font-light text-15 md:text-16"
               />
-            </div>
+            )}
           </div>
           {children}
         </main>

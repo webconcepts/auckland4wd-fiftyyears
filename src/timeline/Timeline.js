@@ -19,13 +19,16 @@ function Timeline({ data, isLoading, isError }) {
     );
   }
 
+  const yearClasses = 'pt-5 pb-3 sm:absolute sm:pin-l';
+  const yearH3Classes = 'text-29 font-normal text-grey';
+
   return (
     <div className="relative">
       <div className="py-4 sm:ml-32 sm:border-l-8 sm:border-blackish-light sm:pl-8">
         {years.map((year) => data[year] && (
           <React.Fragment key={year}>
-            <div className="py-3 sm:absolute sm:pin-l">
-              <h3 className="text-29 font-normal text-grey">{year}</h3>
+            <div className={yearClasses}>
+              <h3 className={yearH3Classes}>{year}</h3>
             </div>
             {data[year].map(item => item.type
               ? <TimelineItem key={item.id} item={item} />
@@ -35,8 +38,8 @@ function Timeline({ data, isLoading, isError }) {
         ))}
         {data[''] && (
           <React.Fragment key="misc">
-            <div className="py-3 sm:absolute sm:pin-l">
-              <h3 className="text-29 font-normal text-grey">misc.</h3>
+            <div className={yearClasses}>
+              <h3 className={yearH3Classes}>misc.</h3>
             </div>
             {data[''].map(item => item.type
               ? <TimelineItem key={item.id} item={item} />

@@ -7,6 +7,7 @@ import ContentPageHeader from './common/ContentPageHeader';
 import ContentPageFooter from './common/ContentPageFooter';
 import Editable from './forms/Editable';
 import MetaListItem from './common/MetaListItem';
+import PublishButton from './common/PublishButton';
 import DraftMetaListItem from './common/DraftMetaListItem';
 import DraftMetaListDateItem from './common/DraftMetaListDateItem';
 import PageSpinner from './common/PageSpinner';
@@ -76,13 +77,7 @@ class DraftContentPage extends React.Component {
               <UserContext.Consumer>
                 {context => context.editor && (
                   <MetaListItem>
-                    <button
-                      onClick={this.context.publish}
-                      className="relative uppercase text-grey-light text-14 bg-blackish-light py-2 px-4 hover:bg-monza hover:text-white"
-                      style={{ top: '-5px' }}
-                    >
-                      Publish
-                    </button>
+                    <PublishButton onClick={this.context.publish} label="Publish" />
                   </MetaListItem>
                 )}
               </UserContext.Consumer>

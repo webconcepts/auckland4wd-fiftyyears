@@ -33,11 +33,24 @@ function HomePage(props) {
           </p>
         </div>
       </div>
-      <div className="max-w-lg mx-auto px-6 pb-24">
-        <TimelineContext.Consumer>
-          {context => <Timeline {...context} />}
-        </TimelineContext.Consumer>
-      </div>
+      <TimelineContext.Consumer>
+        {context => (
+          <div className="max-w-lg mx-auto px-6 pb-12">
+            <Timeline {...context} />
+            {!context.isLoading && (
+              <React.Fragment>
+                <p className="pt-16 text-20 text-white font-light leading-normal sm:text-center sm:text-24">
+                  Thank you for 50 years of memories
+                </p>
+                <p className="py-3 text-12 text-grey leading-normal sm:text-14 sm:text-center">
+                  All content is property of its respective owners.<br />
+                  Please do not copy or repost without permission.
+                </p>
+              </React.Fragment>
+            )}
+          </div>
+        )}
+      </TimelineContext.Consumer>
     </React.Fragment>
   );
 }

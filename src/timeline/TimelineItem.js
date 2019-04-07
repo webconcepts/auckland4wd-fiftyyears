@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { imageSrc } from '../utils/images';
 
 import TimelineItemMeta from './TimelineItemMeta';
 
@@ -12,7 +13,7 @@ function TimelineItem({ item }) {
     >
       {item.cover_photo_id && (
         <img
-          src={coverPhotoSrc(item)}
+          src={imageSrc(item.id, item.cover_photo_id, 125, 125)}
           className="w-20 h-20 mr-4 sm:w-24 sm:h-24 sm:mr-8 lg:w-28 lg:h-28" alt={item.title}
         />
       )}
@@ -25,11 +26,6 @@ function TimelineItem({ item }) {
       </div>
     </Link>
   );
-}
-
-function coverPhotoSrc(item) {
-  const filePath = `${process.env.REACT_APP_S3_KEY_PREFIX}/${item.id}/${item.cover_photo_id}`;
-  return `${process.env.REACT_APP_S3_URL}125x125/${filePath}`;
 }
 
 export default TimelineItem;

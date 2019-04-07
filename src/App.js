@@ -6,6 +6,7 @@ import TimelineState from './context/TimelineState';
 import ScrollState from './context/ScrollState';
 import HomePage from './HomePage';
 import ContributePage from './ContributePage';
+import SlideshowPage from './slideshow/SlideshowPage';
 import LoginPage from './login/LoginPage';
 import VerifyPage from './login/VerifyPage';
 import PageNotFound from './PageNotFound';
@@ -35,6 +36,7 @@ class App extends React.Component {
                 <Route path="/photo-album/:id" component={PhotoAlbum} />
                 <Route path="/video/:id" component={VideoPage} />
                 <Route path="/contribute" component={ContributePage} />
+                <Route path="/slideshow" component={SlideshowPage} />
                 <Route path="/draft/photo-album/:id" component={DraftPhotoAlbum} />
                 <Route path="/draft/video/:id" component={DraftVideoPage} />
                 <Route path="/draft/milestone/:id" component={DraftMilestonePage} />

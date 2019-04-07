@@ -1,5 +1,6 @@
 import React from 'react';
 import { fetchApi, jsonOnStatus, onStatus } from '../utils/api';
+import { imageSrc } from '../utils/images';
 
 import ItemPhotosContext from './item-photos-context';
 
@@ -58,12 +59,9 @@ class ItemPhotosState extends React.Component {
 
     if (photo.src && !photo.uploaded) {
       return photo.src;
+    } else {
+      return imageSrc(this.props.id, photo.id, width, height, crop);
     }
-
-    const resize = `${width}x${height}${crop}`;
-    const filePath = `${process.env.REACT_APP_S3_KEY_PREFIX}/${this.props.id}/${photo.id}`;
-
-    return `${process.env.REACT_APP_S3_URL}${resize}/${filePath}`;
   }
 
   handleChange(key, data) {

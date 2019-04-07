@@ -144,6 +144,14 @@ body {
     text-shadow: 3px 3px 8px config('colors.blackish-light');
 }
 
+.bg-gradient-black-to-bottom {
+    background: linear-gradient(to bottom, config('colors.tint-black'), transparent);
+}
+
+.bg-gradient-black-to-top {
+    background: linear-gradient(to top, config('colors.tint-black'), transparent);
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,

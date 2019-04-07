@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { imageSrc } from '../utils/images';
 
 import TimelineItemMeta from './TimelineItemMeta';
+import { Film } from 'react-feather';
 
 function TimelineItem({ item }) {
   return (
@@ -18,7 +19,10 @@ function TimelineItem({ item }) {
         />
       )}
       <div className="pb-2">
-        <h4 className="font-normal text-20 sm:text-24 sm:mb-3">{item.title}</h4>
+        <h4 className="font-normal text-20 sm:text-24 sm:mb-3">
+          {item.title}
+          {item.type == 'video' && <Film size="19" className="text-havelock ml-3 -mb-px" />}
+        </h4>
         <TimelineItemMeta item={item} />
         {item.authorship && (
           <p className="mt-2 font-light text-14 text-grey">{item.authorship}</p>

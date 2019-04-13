@@ -31,7 +31,7 @@ class FullsizeImageDimensions extends React.Component {
   }
 
   render() {
-    return this.props.children(this.state);
+    return this.state.imgWidth ? this.props.children(this.state) : null;
   }
 }
 

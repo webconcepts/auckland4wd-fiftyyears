@@ -18,11 +18,18 @@ class Slideshow extends React.Component {
       data: false,
       photos: false,
       nextAlbumData: false,
-      albumOffset: this.props.isRandom ? null : 0,
+      seed: this.props.isRandom ? this.getRandomSeed() : null,
+      albumOffset: 0,
       currentPhotoIndex: null
     };
 
     this.handleKeyDown = this.handleKeyDown.bind(this);
+  }
+
+  getRandomSeed() {
+    const min = 100000000;
+    const max = 999999999;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   componentDidMount() {
@@ -47,7 +54,7 @@ class Slideshow extends React.Component {
   fetchNextAlbumData() {
     const offset = this.state.albumOffset !== null ? this.state.albumOffset + 1 : null;
 
-    fetchApi('GET', `slideshow?number=${this.props.photosPerAlbum}${offset !== null ? `&offset=${offset}` : ''}`)
+    fetchApi('GET', `slideshow?number=${this.props.photosPerAlbum}${offset !== null ? `&offset=${offset}` : ''}${this.state.seed !== null ? `&seed=${this.state.seed}` : ''}`)
       .then((response) => jsonOnStatus(response, 200))
       .then((json) => this.setState({
         nextAlbumData: json,

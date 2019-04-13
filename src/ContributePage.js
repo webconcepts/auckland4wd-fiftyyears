@@ -10,7 +10,7 @@ import CreateItemForm from './CreateItemForm';
 import DraftsList from './common/DraftsList';
 import Spinner from './common/Spinner';
 import Timeline from './timeline/Timeline';
-import { Image, Film, Bookmark } from 'react-feather';
+import { Image, Film, Bookmark, LogIn } from 'react-feather';
 
 function ContributePage(props) {
   return (
@@ -61,6 +61,13 @@ function ContributePage(props) {
         <UserContext.Consumer>
           {context => (
             <React.Fragment>
+              {!context.id && (
+                <div className="absolute pin-t pin-r">
+                  <Link to="/login" className="block bg-grey-dark p-2 text-white hover:bg-grey focus:bg-grey">
+                    <LogIn size="21" className="mt-px ml-px mr-px" />
+                  </Link>
+                </div>
+              )}
               {context.id && (
                 <div className="mt-16">
                   <DraftsList />

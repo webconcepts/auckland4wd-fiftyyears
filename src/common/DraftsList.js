@@ -61,7 +61,7 @@ class DraftsList extends React.Component {
         {!this.props.user && (
           <p className="leading-normal font-light mt-10">
             Thank you for your contribution! Keep it up. We will let you know when
-            we start to publish everyone's content here for us all to enjoy.
+            we publish your content here for everyone to enjoy.
           </p>
         )}
       </div>

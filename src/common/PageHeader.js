@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import UserContext from '../context/user-context';
-import { LogIn } from 'react-feather';
 import fiftyYears from '../img/fifty-years.svg';
 import logo1 from '../img/logo1.jpg';
 import logo2 from '../img/logo2.jpg';
@@ -43,19 +41,6 @@ class PageHeader extends React.Component {
           </div>
         </div>
         <h1 className="text-1 pt-2 px-12"><img src={fiftyYears} width="277" alt="FIFTY YEARS" /></h1>
-        <UserContext.Consumer>
-          {context => (
-            <React.Fragment>
-              {!context.id && (
-                <div className="absolute pin-t pin-r">
-                  <Link to="/login" className="block bg-grey p-2 text-white hover:bg-grey-dark focus:bg-grey-dark">
-                    <LogIn size="21" className="mt-px ml-px mr-px" />
-                  </Link>
-                </div>
-              )}
-            </React.Fragment>
-          )}
-        </UserContext.Consumer>
       </header>
     );
   }

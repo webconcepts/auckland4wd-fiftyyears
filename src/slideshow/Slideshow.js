@@ -54,7 +54,7 @@ class Slideshow extends React.Component {
   fetchNextAlbumData() {
     const offset = this.state.albumOffset !== null ? this.state.albumOffset + 1 : null;
 
-    fetchApi('GET', `slideshow?number=${this.props.photosPerAlbum}${offset !== null ? `&offset=${offset}` : ''}${this.state.seed !== null ? `&seed=${this.state.seed}` : ''}`)
+    fetchApi('GET', `slideshow?number=${this.props.photosPerAlbum}${offset !== null ? `&offset=${offset}` : ''}${this.state.seed !== null ? `&seed=${this.state.seed}` : ''}${this.props.fromYear !== null ? `&from_year=${this.props.fromYear}` : ''}`)
       .then((response) => jsonOnStatus(response, 200))
       .then((json) => this.setState({
         nextAlbumData: json,

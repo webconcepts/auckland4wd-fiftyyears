@@ -3,16 +3,20 @@ import { Route, Link } from 'react-router-dom';
 
 import Slideshow from './Slideshow';
 import Button from '../common/Button';
+import Select from '../forms/Select';
 import { Play } from 'react-feather';
 
 class SlideshowPage extends React.Component {
   constructor(props) {
     super(props);
 
+    this.years = Array.from({length: 51}, (x,i) => i + 1969);
+
     this.state = {
       isRandom: true,
       photosPerAlbum: 7,
-      photoDisplayTime: 7
+      photoDisplayTime: 7,
+      fromYear: null
     };
   }
 
@@ -26,6 +30,7 @@ class SlideshowPage extends React.Component {
             isRandom={this.state.isRandom}
             photosPerAlbum={this.state.photosPerAlbum}
             photoDisplayTime={this.state.photoDisplayTime}
+            fromYear={this.state.fromYear}
           />
         )} />
         <div className="max-w-sm mx-auto pt-16">
@@ -52,6 +57,14 @@ class SlideshowPage extends React.Component {
                 className={inputClasses}
               />
             </label>
+          </p>
+          <p className="mb-6">
+            <span className="block mb-3">Only include albums from this year and newer</span>
+            <Select
+              value={this.state.fromYear}
+              options={this.years}
+              onChange={(e) => this.setState({ fromYear: e.target.value })}
+            />
           </p>
           <p className="mb-10">
             <input
